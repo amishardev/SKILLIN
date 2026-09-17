@@ -85,34 +85,41 @@ export async function deleteAccount(): Promise<void> {
   await deleteUser(user);
 }
 
-/** Human-readable messages for the Firebase getAuthClient() error codes users actually hit. */
+/** Human-readable messages for the Firebase auth error codes users actually hit. */
 export function authErrorMessage(err: unknown): string {
   const code = typeof err === 'object' && err && 'code' in err ? String(err.code) : '';
   switch (code) {
     case 'auth/invalid-email':
       return 'That email address doesn’t look right.';
-    case 'getAuthClient()/user-not-found':
-    case 'getAuthClient()/wrong-password':
+    case 'auth/user-not-found':
+    case 'auth/wrong-password':
     case 'auth/invalid-credential':
       return 'That email and password combination didn’t work.';
-    case 'getAuthClient()/email-already-in-use':
+    case 'auth/email-already-in-use':
       return 'An account already exists with that email. Try signing in instead.';
-    case 'getAuthClient()/weak-password':
+    case 'auth/weak-password':
       return 'Choose a password with at least 6 characters.';
-    case 'getAuthClient()/popup-closed-by-user':
-    case 'getAuthClient()/cancelled-popup-request':
+    case 'auth/popup-closed-by-user':
+    case 'auth/cancelled-popup-request':
       return 'Sign-in was cancelled.';
-    case 'getAuthClient()/popup-blocked':
+    case 'auth/popup-blocked':
       return 'Your browser blocked the sign-in popup. Allow popups and try again.';
-    case 'getAuthClient()/too-many-requests':
+    case 'auth/too-many-requests':
       return 'Too many attempts. Wait a moment and try again.';
-    case 'getAuthClient()/network-request-failed':
+    case 'auth/network-request-failed':
       return 'We couldn’t reach the server. Check your connection.';
-    case 'getAuthClient()/requires-recent-login':
+    case 'auth/requires-recent-login':
       return 'For security, sign in again before doing that.';
-    case 'getAuthClient()/operation-not-allowed':
-      return 'That sign-in method isn’t enabled for this project yet.';
+    case 'auth/operation-not-allowed':
+      return 'That sign-in method is not enabled for this project yet.';
+    case 'auth/unauthorized-domain':
+      return 'This site is not on the Firebase project’s authorized domain list, so sign-in was refused. Add it in Firebase console, Authentication, Settings, Authorized domains.';
+    case 'auth/invalid-api-key':
+    case 'auth/api-key-not-valid':
+      return 'The Firebase API key for this site is missing or rejected. Check the NEXT_PUBLIC_FIREBASE_* variables where it is deployed.';
     default:
-      return 'Something went wrong. Please try again.';
+      // The code itself, rather than a shrug. An unmapped failure is exactly
+      // when the person needs something they can search for or send on.
+      return `Sign-in failed (${code}). Please try again.`;
   }
 }
