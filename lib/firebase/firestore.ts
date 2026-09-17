@@ -1,7 +1,7 @@
 'use client';
 
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db } from './config';
+import { getDb } from './config';
 import { COLLECTIONS, type PlanDoc, type ProfileDoc, type RoadmapDoc, type UserDoc } from './schema';
 import type { CareerPlan, LearningStreak, Roadmap, StudentProfile, UserProgress } from '@/types';
 
@@ -59,7 +59,7 @@ async function guard<T>(operation: () => Promise<T>): Promise<T> {
 
 export async function createUserDoc(uid: string, data: Partial<UserDoc>): Promise<void> {
   await guard(() => setDoc(
-    doc(db, COLLECTIONS.users, uid),
+    doc(getDb(), COLLECTIONS.users, uid),
     {
       fullName: '',
       email: '',
@@ -75,23 +75,23 @@ export async function createUserDoc(uid: string, data: Partial<UserDoc>): Promis
 }
 
 export async function getUserDoc(uid: string): Promise<UserDoc | null> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.users, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.users, uid)));
   return snap.exists() ? (snap.data() as UserDoc) : null;
 }
 
 export async function updateUserDoc(uid: string, data: Partial<UserDoc>): Promise<void> {
-  await guard(() => setDoc(doc(db, COLLECTIONS.users, uid), { ...data, updatedAt: now() }, { merge: true }));
+  await guard(() => setDoc(doc(getDb(), COLLECTIONS.users, uid), { ...data, updatedAt: now() }, { merge: true }));
 }
 
 // ── Profile ───────────────────────────────────────────────
 
 export async function saveProfile(uid: string, profile: StudentProfile): Promise<void> {
   const payload: ProfileDoc = { profile, updatedAt: now() };
-  await guard(() => setDoc(doc(db, COLLECTIONS.profiles, uid), payload));
+  await guard(() => setDoc(doc(getDb(), COLLECTIONS.profiles, uid), payload));
 }
 
 export async function loadProfile(uid: string): Promise<StudentProfile | null> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.profiles, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.profiles, uid)));
   return snap.exists() ? (snap.data() as ProfileDoc).profile : null;
 }
 
@@ -99,11 +99,11 @@ export async function loadProfile(uid: string): Promise<StudentProfile | null> {
 
 export async function savePlan(uid: string, plan: CareerPlan): Promise<void> {
   const payload: PlanDoc = { plan, updatedAt: now() };
-  await guard(() => setDoc(doc(db, COLLECTIONS.plans, uid), payload));
+  await guard(() => setDoc(doc(getDb(), COLLECTIONS.plans, uid), payload));
 }
 
 export async function loadPlan(uid: string): Promise<CareerPlan | null> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.plans, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.plans, uid)));
   return snap.exists() ? (snap.data() as PlanDoc).plan : null;
 }
 
@@ -111,34 +111,34 @@ export async function loadPlan(uid: string): Promise<CareerPlan | null> {
 
 export async function saveRoadmap(uid: string, roadmap: Roadmap): Promise<void> {
   const payload: RoadmapDoc = { roadmap, updatedAt: now() };
-  await guard(() => setDoc(doc(db, COLLECTIONS.roadmaps, uid), payload));
+  await guard(() => setDoc(doc(getDb(), COLLECTIONS.roadmaps, uid), payload));
 }
 
 export async function loadRoadmap(uid: string): Promise<Roadmap | null> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.roadmaps, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.roadmaps, uid)));
   return snap.exists() ? (snap.data() as RoadmapDoc).roadmap : null;
 }
 
 // ── Saved resources ───────────────────────────────────────
 
 export async function saveResourceIds(uid: string, ids: string[]): Promise<void> {
-  await guard(() => setDoc(doc(db, COLLECTIONS.saved, uid), { ids, updatedAt: now() }));
+  await guard(() => setDoc(doc(getDb(), COLLECTIONS.saved, uid), { ids, updatedAt: now() }));
 }
 
 export async function loadSavedResourceIds(uid: string): Promise<string[]> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.saved, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.saved, uid)));
   return snap.exists() ? ((snap.data().ids as string[]) ?? []) : [];
 }
 
 // ── Read-only mirrors of server-managed documents ─────────
 
 export async function loadProgress(uid: string): Promise<UserProgress | null> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.progress, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.progress, uid)));
   return snap.exists() ? (snap.data() as UserProgress) : null;
 }
 
 export async function loadStreak(uid: string): Promise<LearningStreak | null> {
-  const snap = await guard(() => getDoc(doc(db, COLLECTIONS.streaks, uid)));
+  const snap = await guard(() => getDoc(doc(getDb(), COLLECTIONS.streaks, uid)));
   return snap.exists() ? (snap.data() as LearningStreak) : null;
 }
 
@@ -151,11 +151,11 @@ export async function loadStreak(uid: string): Promise<LearningStreak | null> {
 export async function deleteOwnedData(uid: string): Promise<void> {
   const { deleteDoc } = await import('firebase/firestore');
   await Promise.all([
-    deleteDoc(doc(db, COLLECTIONS.profiles, uid)).catch(() => {}),
-    deleteDoc(doc(db, COLLECTIONS.plans, uid)).catch(() => {}),
-    deleteDoc(doc(db, COLLECTIONS.roadmaps, uid)).catch(() => {}),
-    deleteDoc(doc(db, COLLECTIONS.saved, uid)).catch(() => {}),
-    deleteDoc(doc(db, COLLECTIONS.users, uid)).catch(() => {}),
+    deleteDoc(doc(getDb(), COLLECTIONS.profiles, uid)).catch(() => {}),
+    deleteDoc(doc(getDb(), COLLECTIONS.plans, uid)).catch(() => {}),
+    deleteDoc(doc(getDb(), COLLECTIONS.roadmaps, uid)).catch(() => {}),
+    deleteDoc(doc(getDb(), COLLECTIONS.saved, uid)).catch(() => {}),
+    deleteDoc(doc(getDb(), COLLECTIONS.users, uid)).catch(() => {}),
   ]);
 }
 

@@ -11,6 +11,11 @@ function read(name: string, fallback = ''): string {
   return value && value.trim().length > 0 ? value.trim() : fallback;
 }
 
+/** Same trimming as `read`, for values referenced statically. */
+function clean(value: string | undefined): string {
+  return value && value.trim().length > 0 ? value.trim() : '';
+}
+
 /**
  * Firebase Web config.
  *
@@ -24,12 +29,22 @@ function read(name: string, fallback = ''): string {
  * environment for a deploy. `.env.example` lists them.
  */
 export const firebaseConfig = {
-  apiKey: read('NEXT_PUBLIC_FIREBASE_API_KEY'),
-  authDomain: read('NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN'),
-  projectId: read('NEXT_PUBLIC_FIREBASE_PROJECT_ID'),
-  storageBucket: read('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'),
-  messagingSenderId: read('NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID'),
-  appId: read('NEXT_PUBLIC_FIREBASE_APP_ID'),
+  /*
+   * Written out one by one, not through `read()`.
+   *
+   * Next inlines `NEXT_PUBLIC_*` into the browser bundle by substituting the
+   * literal text `process.env.NEXT_PUBLIC_FOO`. A dynamic lookup like
+   * `process.env[name]` is not that text, so it is never substituted and
+   * arrives as undefined in the browser. Hardcoded fallbacks were hiding this:
+   * the environment variables had never reached the client at all, and the app
+   * was running on the defaults whatever anyone set.
+   */
+  apiKey: clean(process.env.NEXT_PUBLIC_FIREBASE_API_KEY),
+  authDomain: clean(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN),
+  projectId: clean(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID),
+  storageBucket: clean(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET),
+  messagingSenderId: clean(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID),
+  appId: clean(process.env.NEXT_PUBLIC_FIREBASE_APP_ID),
 } as const;
 
 /**
