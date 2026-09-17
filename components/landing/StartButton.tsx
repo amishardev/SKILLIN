@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useState, type ReactNode } from 'react';
 import { useSession } from '@/lib/client/session';
 import SkillInMotionLogo from '@/components/brand/MotionLogo';
 
@@ -37,10 +37,10 @@ export default function StartButton({
   const { ready, user, profile, plan } = useSession();
   const [waiting, setWaiting] = useState(false);
 
-  function destination() {
+  const destination = useCallback(() => {
     if (!user) return '/auth/register';
     return profile && plan ? '/app' : '/onboarding';
-  }
+  }, [user, profile, plan]);
 
   function go() {
     if (!ready) {
@@ -52,10 +52,15 @@ export default function StartButton({
     router.push(destination());
   }
 
-  // Once the session resolves while the loader is up, leave immediately.
-  if (waiting && ready) {
-    router.push(destination());
-  }
+  /*
+   * The click arrived before the session resolved, so it is still pending. This
+   * has to be an effect: navigating is a side effect, and calling router.push
+   * while rendering asks the router to update during another component's render,
+   * which React reports as a setState-in-render error.
+   */
+  useEffect(() => {
+    if (waiting && ready) router.push(destination());
+  }, [waiting, ready, router, destination]);
 
   return (
     <>
