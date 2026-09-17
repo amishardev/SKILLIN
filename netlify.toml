@@ -1,0 +1,21 @@
+# Netlify build for the Next.js app.
+#
+# The Next.js runtime plugin is what makes App Router routes, the API routes and
+# the proxy work on Netlify; it is installed automatically for Next sites, and
+# named here so the build does not depend on that detection.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Private pages are already marked noindex in the app layout. This is the same
+# statement at the edge, for anything that never renders.
+[[headers]]
+  for = "/app/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

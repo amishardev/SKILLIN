@@ -1,0 +1,91 @@
+rules_version = '2';
+
+// ═══════════════════════════════════════════════════════════════
+// SkillIn Firestore Security Rules
+//
+// Deploy with:  firebase deploy --only firestore:rules
+//
+// Two guarantees:
+//   1. A signed-in user can only ever touch documents keyed by their own uid.
+//      There is no collection in this schema that spans users, so no query can
+//      return someone else's profile.
+//   2. Streak, progress, activity and recommendation documents are READ-ONLY
+//      for clients. They are written exclusively by the Admin SDK from the
+//      server, which bypasses these rules. That is what makes the streak
+//      tamper-resistant rather than merely obscured.
+// ═══════════════════════════════════════════════════════════════
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // ── User-owned, client-writable ───────────────────────────
+    // The user's own account record, extracted profile, chosen plan,
+    // generated roadmap and saved resources.
+
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /profiles/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /plans/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /roadmaps/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /saved_resources/{uid} {
+      allow read, write: if isOwner(uid);
+    }
+
+    // ── Server-authoritative: read-only to every client ───────
+    // The Admin SDK is not subject to these rules, so the server can still
+    // write. A client that tries is denied regardless of payload — which is
+    // why the frontend never attempts to set a streak value directly.
+
+    match /learning_streaks/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+    }
+
+    match /progress/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+    }
+
+    match /learning_activity/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+
+      match /events/{eventId} {
+        allow read: if isOwner(uid);
+        allow write: if false;
+      }
+    }
+
+    match /recommendations/{uid} {
+      allow read: if isOwner(uid);
+      allow write: if false;
+    }
+
+    // ── Everything else is denied ─────────────────────────────
+    // The catalog (skills, careers, resources, projects) ships with the app
+    // as static data, so it needs no Firestore read rule at all.
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

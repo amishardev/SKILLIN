@@ -1,0 +1,213 @@
+/**
+ * Analysis orchestration.
+ *
+ * One pure function turns a confirmed profile plus a plan into everything the
+ * app displays: skills, gaps, readiness, recommendations and a roadmap.
+ *
+ * Pure and dependency-free by design, it runs unchanged on the server for a
+ * signed-in user, so there is exactly one code path from a profile to what the
+ * product shows.
+ */
+
+import { getCareer, type CareerGoal } from '@/data/careers';
+import { getResource, type LearningResource } from '@/data/resources';
+import { PROJECTS, type ProjectTemplate } from '@/data/projects';
+import { buildStudentSkills, toVector } from '@/lib/skills/vector';
+import {
+  computeSkillGaps,
+  computeCareerReadiness,
+  explainRecommendation,
+  rankResources,
+  topK,
+  type RankedResource,
+  type ScoringContext,
+} from '@/lib/recommendation/engine';
+import { checkReadiness } from '@/lib/recommendation/prerequisites';
+import { gapEmbedding } from '@/lib/embeddings';
+import { buildRoadmap, skillSequence } from '@/lib/roadmap/planner';
+import { currentWeekPlan } from '@/lib/roadmap/weekly';
+import type {
+  CareerPlan,
+  CareerReadiness,
+  Recommendation,
+  Roadmap,
+  SkillGap,
+  SkillVector,
+  StudentProfile,
+  StudentSkill,
+  UserProgress,
+  WeeklyPlan,
+} from '@/types';
+
+export interface BlockedResource {
+  resource: LearningResource;
+  missing: string[];
+  missingNames: string[];
+}
+
+export interface Analysis {
+  career: CareerGoal;
+  skills: StudentSkill[];
+  vector: SkillVector;
+  gaps: SkillGap[];
+  readiness: CareerReadiness;
+  /** The single dominant "your next move" card. */
+  nextMove: { resource: LearningResource; recommendation: Recommendation } | null;
+  recommendations: Recommendation[];
+  ranked: RankedResource[];
+  blocked: BlockedResource[];
+  roadmap: Roadmap;
+  learningPath: string[];
+  projects: ProjectTemplate[];
+  weeklyPlan: WeeklyPlan | null;
+}
+
+export interface AnalyzeInput {
+  profile: StudentProfile;
+  plan: CareerPlan;
+  progress?: UserProgress;
+  /** Which week of the roadmap the learner is on. */
+  currentWeek?: number;
+}
+
+export function analyze(input: AnalyzeInput): Analysis {
+  const career = getCareer(input.plan.careerGoalId);
+  if (!career) {
+    throw new Error(`Unknown career goal: ${input.plan.careerGoalId}`);
+  }
+
+  const skills = buildStudentSkills(input.profile);
+  const vector = toVector(skills);
+
+  const context: ScoringContext = {
+    vector,
+    career,
+    projectSkills: input.profile.projects.flatMap((p) => p.technologies),
+    experienceSkills: input.profile.experience.flatMap((e) => e.technologies),
+    academicSkills: academicSkillsFrom(input.profile),
+    certificateSkills: input.profile.certificates.flatMap((c) => c.skills),
+    completedResourceIds: input.progress?.resourcesCompleted ?? [],
+  };
+
+  const gaps = computeSkillGaps(vector, career);
+  // The remaining-gap direction depends only on the profile and goal, so it is
+  // computed once here and reused for every resource scored below.
+  context.gapVector = gapEmbedding(gaps);
+  const readiness = computeCareerReadiness(vector, career, {
+    projects: input.profile.projects.length + (input.progress?.projectsCompleted.length ?? 0),
+    experienceMonths: estimateExperienceMonths(input.profile),
+  });
+
+  const picks = topK(context, 6);
+  const recommendations: Recommendation[] = picks.map((item, index) => ({
+    rank: index + 1,
+    resourceId: item.resource.id,
+    score: item.score,
+    explanation: explainRecommendation(item.resource, item.score, skills, career),
+    generatedAt: new Date().toISOString(),
+  }));
+
+  const { blocked } = rankResources(context);
+  const blockedList: BlockedResource[] = blocked.slice(0, 6).map(({ resource }) => {
+    const readinessResult = checkReadiness(resource.prerequisites, vector);
+    return {
+      resource,
+      missing: readinessResult.missing,
+      missingNames: readinessResult.missingNames,
+    };
+  });
+
+  const roadmap = buildRoadmap({
+    vector,
+    careerId: career.id,
+    timelineMonths: input.plan.timelineMonths,
+    weeklyHours: input.plan.weeklyHours,
+    context,
+    completedResourceIds: context.completedResourceIds,
+  });
+
+  const projects = roadmap.milestones
+    .filter((m) => m.projectId)
+    .map((m) => PROJECTS.find((p) => p.id === m.projectId))
+    .filter((p): p is ProjectTemplate => Boolean(p));
+
+  const nextMove =
+    picks.length > 0 ? { resource: picks[0].resource, recommendation: recommendations[0] } : null;
+
+  return {
+    career,
+    skills,
+    vector,
+    gaps,
+    readiness,
+    nextMove,
+    recommendations,
+    ranked: picks,
+    blocked: blockedList,
+    roadmap,
+    learningPath: skillSequence(roadmap),
+    projects,
+    weeklyPlan: currentWeekPlan(roadmap, input.currentWeek ?? 1),
+  };
+}
+
+/**
+ * Skills implied by the learner's field of study.
+ *
+ * Derived only from words actually present in the degree and branch, a Data
+ * Science degree implies statistics, a Computer Science one implies algorithms.
+ * Nothing is added for a field the profile does not name.
+ */
+function academicSkillsFrom(profile: StudentProfile): string[] {
+  const text = [profile.degree, profile.branch, ...profile.education.map((e) => `${e.degree} ${e.branch}`)]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+
+  const implied: string[] = [];
+  const add = (condition: boolean, ...ids: string[]) => {
+    if (condition) implied.push(...ids);
+  };
+
+  add(/data science|statistic|analytic/.test(text), 'statistics', 'probability', 'data-analysis');
+  add(/computer science|software|information technology|\bcse?\b/.test(text), 'dsa', 'operating-systems', 'dbms');
+  add(/artificial intelligence|machine learning|\bai\b/.test(text), 'machine-learning', 'linear-algebra');
+  add(/electronic|electrical|\bece\b/.test(text), 'signal-processing', 'embedded-systems');
+  add(/mechanical|robotic/.test(text), 'control-systems');
+  add(/mathematic|\bmath\b/.test(text), 'linear-algebra', 'calculus', 'probability');
+  add(/cyber|security/.test(text), 'cybersecurity', 'computer-networks');
+  add(/design/.test(text), 'ui-design');
+
+  return [...new Set(implied)];
+}
+
+/** Total months of recorded experience, from the dates on each position. */
+function estimateExperienceMonths(profile: StudentProfile): number {
+  let months = 0;
+  for (const exp of profile.experience) {
+    const start = parseMonth(exp.startDate);
+    const end = exp.endDate && !/present/i.test(exp.endDate) ? parseMonth(exp.endDate) : new Date();
+    if (start && end) {
+      const diff =
+        (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+      // A position with no readable dates still counts for something.
+      months += diff > 0 ? diff : 3;
+    } else {
+      months += 3;
+    }
+  }
+  return months;
+}
+
+function parseMonth(value?: string): Date | null {
+  if (!value) return null;
+  const parsed = new Date(`${value} 1`);
+  if (!Number.isNaN(parsed.getTime())) return parsed;
+  const year = value.match(/(19|20)\d{2}/)?.[0];
+  return year ? new Date(Number(year), 0, 1) : null;
+}
+
+/** Resolve a recommendation back to its resource record. */
+export function recommendationResource(rec: Recommendation): LearningResource | undefined {
+  return getResource(rec.resourceId);
+}

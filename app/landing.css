@@ -1,0 +1,296 @@
+/* ══════════════════════════════════════════════════════════════
+   LANDING, editorial cream shell around a dark hero panel
+   Premium, typographic, generous whitespace. A third personality
+   again: marketing, not product chrome and not the catalog.
+   ══════════════════════════════════════════════════════════════ */
+
+.lp {
+  --cream:     #EFEAD9;
+  --cream-2:   #E4DECB;
+  --panel:     #131315;
+  --panel-2:   #1C1C1F;
+  --panel-3:   #242427;
+  --on-panel:  #F3EFE3;
+  --on-panel-2:#9C9A92;
+  --rule:      #D6CFBA;
+  --rule-dark: #2C2C30;
+  --orange:    #FF6845;
+
+  background: var(--cream);
+  color: #17191D;
+  min-height: 100dvh;
+}
+
+.lp-shell {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 28px 72px;
+}
+
+/* ─── Nav sits on the cream, outside the dark panel ─── */
+.lp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px 4px;
+}
+.lp-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 0.875rem;
+  color: #4A4A44;
+}
+.lp-nav-links a:hover { color: #17191D; }
+
+.lp-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 1.0625rem;
+}
+.lp-mark-badge {
+  display: grid;
+  place-items: center;
+  width: 28px; height: 28px;
+  border-radius: 9px;
+  background: #17191D;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* ─── Dark hero panel ─── */
+.lp-panel {
+  background: var(--panel);
+  color: var(--on-panel);
+  border-radius: 26px;
+  padding: 58px 56px 52px;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+/* Faint engineering grid, the reference's quiet background texture. */
+.lp-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 85% 75% at 62% 38%, #000 25%, transparent 78%);
+}
+
+.lp-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.lp-display {
+  font-family: var(--font-display), Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.022em;
+}
+.lp-display em {
+  font-style: italic;
+  color: var(--on-panel-2);
+}
+
+.lp-rule { height: 1px; background: var(--rule-dark); border: 0; margin: 0; }
+
+.lp-sub {
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--on-panel-2);
+  max-width: 46ch;
+}
+
+.btn-orange { background: var(--orange); color: #fff; }
+.btn-orange:hover:not(:disabled) { background: #F4562F; }
+.btn-onpanel { background: transparent; color: var(--on-panel); border-color: var(--rule-dark); }
+.btn-onpanel:hover:not(:disabled) { background: rgba(255, 255, 255, 0.06); }
+
+/* ─── Floating product-preview cards ─── */
+.lp-stage {
+  position: relative;
+  /* Tall enough that the six absolutely-positioned cards never collide;
+     see the coordinates in HeroStage. */
+  min-height: 512px;
+}
+
+.lp-card {
+  background: var(--panel-2);
+  border: 1px solid var(--rule-dark);
+  border-radius: 16px;
+  padding: 16px;
+}
+.lp-card-cream { background: var(--cream); color: #17191D; border-color: var(--rule); }
+.lp-card-orange { background: var(--orange); color: #fff; border-color: var(--orange); }
+.lp-card-accent { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+.lp-float { position: absolute; }
+
+.lp-eyebrow {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: .55;
+}
+
+.lp-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: .85;
+}
+.lp-tag-solid {
+  border-color: transparent;
+  background: #17191D;
+  color: var(--cream);
+  opacity: 1;
+}
+
+/* ─── Provider strip ─── */
+.lp-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  flex-wrap: wrap;
+  padding: 26px 8px 0;
+  color: #6B675C;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Content sections ─── */
+.lp-section { padding: 96px 4px 0; }
+.lp-h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+}
+.lp-lede { font-size: 1.0625rem; color: #55534C; line-height: 1.6; max-width: 56ch; }
+
+.lp-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.lp-step {
+  background: var(--cream-2);
+  border-radius: 20px;
+  padding: 28px 26px 30px;
+  min-height: 230px;
+  display: flex;
+  flex-direction: column;
+}
+.lp-step-n {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2.25rem;
+  line-height: 1;
+  color: #A39C87;
+  margin-bottom: auto;
+}
+
+.lp-split { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+
+.lp-quote-bad {
+  background: var(--cream-2);
+  border-radius: 20px;
+  padding: 30px 28px;
+  color: #86816F;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+.lp-quote-good {
+  background: var(--panel);
+  color: var(--on-panel);
+  border-radius: 20px;
+  padding: 30px 28px;
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.lp-evidence {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.lp-evidence-item {
+  background: var(--cream-2);
+  border-radius: 16px;
+  padding: 20px 18px;
+}
+
+/* ─── Final CTA ─── */
+.lp-cta {
+  background: var(--panel);
+  color: var(--on-panel);
+  border-radius: 26px;
+  padding: 72px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.lp-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 34px 4px 0;
+  color: #6B675C;
+  font-size: 0.8125rem;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1080px) {
+  .lp-hero   { grid-template-columns: 1fr; gap: 36px; }
+  .lp-stage  { min-height: 0; }
+  .lp-split  { grid-template-columns: 1fr; gap: 24px; }
+  .lp-steps  { grid-template-columns: 1fr; }
+  .lp-evidence { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 760px) {
+  .lp-shell  { padding: 0 14px 56px; }
+  .lp-panel  { padding: 34px 22px 38px; border-radius: 20px; }
+  .lp-cta    { padding: 48px 22px; border-radius: 20px; }
+  .lp-section{ padding-top: 64px; }
+  .lp-nav-links { display: none; }
+  .lp-strip  { gap: 16px; font-size: 0.8125rem; justify-content: flex-start; }
+  /* "Log in" was breaking across two lines once the gutter narrowed. */
+  .lp-nav { gap: 12px; padding: 16px 2px; }
+  .lp-nav a, .lp-nav .btn { white-space: nowrap; }
+}
+
+@media (max-width: 420px) {
+  /* The byline is legible at this size only as a wider lockup; the full credit
+     still appears in the footer and the page title. */
+  .lp-nav .lp-byline { display: none; }
+}
+
+/* On small screens the floating composition becomes an honest stack. */
+@media (max-width: 1080px) {
+  .lp-float { position: static !important; width: auto !important; }
+  .lp-stage-flow { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+@media (max-width: 560px) {
+  .lp-stage-flow { grid-template-columns: 1fr; }
+}
