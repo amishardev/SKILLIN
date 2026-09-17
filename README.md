@@ -118,6 +118,18 @@ only by the Learn route.
 
 ---
 
+## Mathematics
+
+Every method, why it was chosen, why the obvious alternative was wrong, and a
+worked example with real pipeline output: **[MATHEMATICS.md](MATHEMATICS.md)**.
+
+Noisy-OR for evidence, PPMI and a Jacobi eigendecomposition for the skill
+embeddings, cosine similarity for gap direction, Kahn's topological sort for
+prerequisites, a convex combination for ranking and an MMR-style redundancy
+penalty for diversity. No neural network anywhere.
+
+---
+
 ## Architecture
 
 The rule that shapes the whole codebase: **deterministic code decides, AI only
