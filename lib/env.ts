@@ -12,18 +12,32 @@ function read(name: string, fallback = ''): string {
 }
 
 /**
- * Firebase Web config. These values are public by design, Firebase identifies
- * the project with them and enforces access through Security Rules, not secrecy.
- * They are still read from the environment so a fork can point at its own project.
+ * Firebase Web config.
+ *
+ * These values are not secrets: the browser receives all of them, and access is
+ * enforced by Security Rules rather than by keeping them hidden. They are still
+ * not committed. A hardcoded project id turns every fork and every clone into
+ * traffic against one person's Firebase project, and a key in a public repo is
+ * a key that gets scraped and used for quota, whatever it protects.
+ *
+ * So there is no fallback. Set them in `.env.local` locally and in the host's
+ * environment for a deploy. `.env.example` lists them.
  */
 export const firebaseConfig = {
-  apiKey: read('NEXT_PUBLIC_FIREBASE_API_KEY', 'AIzaSyAGoCEXe78uhcLTo-mIUv_8G3pp27qkT2M'),
-  authDomain: read('NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN', 'studio-5637634634-d071b.firebaseapp.com'),
-  projectId: read('NEXT_PUBLIC_FIREBASE_PROJECT_ID', 'studio-5637634634-d071b'),
-  storageBucket: read('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET', 'studio-5637634634-d071b.firebasestorage.app'),
-  messagingSenderId: read('NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID', '92462534820'),
-  appId: read('NEXT_PUBLIC_FIREBASE_APP_ID', '1:92462534820:web:dcda35528847726e7cd631'),
+  apiKey: read('NEXT_PUBLIC_FIREBASE_API_KEY'),
+  authDomain: read('NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN'),
+  projectId: read('NEXT_PUBLIC_FIREBASE_PROJECT_ID'),
+  storageBucket: read('NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET'),
+  messagingSenderId: read('NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID'),
+  appId: read('NEXT_PUBLIC_FIREBASE_APP_ID'),
 } as const;
+
+/**
+ * True when the Firebase config is actually present. The client uses this to
+ * say what is wrong rather than throwing an opaque Firebase error.
+ */
+export const hasFirebaseConfig = () =>
+  Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId);
 
 /** Server-only secrets. Never import this object into a Client Component. */
 export const serverEnv = {
