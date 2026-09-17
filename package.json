@@ -16,6 +16,9 @@
     "check:dashes": "node scripts/strip-dashes.mjs --check",
     "fix:dashes": "node scripts/strip-dashes.mjs"
   },
+  "engines": {
+    "node": ">=22"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.9.1",

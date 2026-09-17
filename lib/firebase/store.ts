@@ -1,5 +1,7 @@
 import 'server-only';
 
+import type { QueryDocumentSnapshot } from 'firebase-admin/firestore';
+
 import { adminDb, adminAvailable } from './admin';
 import { COLLECTIONS, ACTIVITY_EVENTS, type ProgressDoc, type StreakDoc } from './schema';
 import { EMPTY_STREAK } from '@/lib/streak/engine';
@@ -86,7 +88,14 @@ export async function readActivity(uid: string, limit = 120): Promise<ActivityEv
     .orderBy('at', 'desc')
     .limit(limit)
     .get();
-  return snap.docs.map((d) => d.data() as ActivityEvent);
+  /*
+   * Annotated rather than inferred. `adminDb()` is typed, so this infers
+   * locally, but the chain runs through `firebase-admin` into
+   * `@google-cloud/firestore`, and on a clean CI install it degraded to `any`
+   * and failed the build under `noImplicitAny`. A build should not depend on
+   * how deep a type chain resolves on a given machine.
+   */
+  return snap.docs.map((doc: QueryDocumentSnapshot) => doc.data() as ActivityEvent);
 }
 
 /**

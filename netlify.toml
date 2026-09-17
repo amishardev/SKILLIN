@@ -11,7 +11,9 @@
   package = "@netlify/plugin-nextjs"
 
 [build.environment]
-  NODE_VERSION = "20"
+  # unpdf, which does the PDF text extraction, requires Node 22 or newer.
+  # Netlify defaulted this build to 20 and warned about the engine mismatch.
+  NODE_VERSION = "22"
 
 # Private pages are already marked noindex in the app layout. This is the same
 # statement at the edge, for anything that never renders.
