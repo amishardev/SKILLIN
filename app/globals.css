@@ -399,20 +399,10 @@ button, input, textarea, select { font: inherit; color: inherit; }
 .bar-warn   > i { background: var(--warn); }
 
 /* ─── Wordmark ─── */
-/* The byline sits under the name rather than beside it, so the product keeps
-   its own presence and the credit reads as authorship, not a co-brand. */
 .lp-wordmark {
   display: inline-flex;
   flex-direction: column;
   line-height: 1.1;
-}
-.lp-byline {
-  font-size: 0.5625rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.55;
-  margin-top: 1px;
 }
 
 /* ─── Layout helpers ─── */

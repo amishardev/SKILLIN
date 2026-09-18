@@ -280,11 +280,6 @@
   .lp-nav a, .lp-nav .btn { white-space: nowrap; }
 }
 
-@media (max-width: 420px) {
-  /* The byline is legible at this size only as a wider lockup; the full credit
-     still appears in the footer and the page title. */
-  .lp-nav .lp-byline { display: none; }
-}
 
 /* On small screens the floating composition becomes an honest stack. */
 @media (max-width: 1080px) {

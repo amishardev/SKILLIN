@@ -127,7 +127,7 @@ export default function OnboardingPage() {
         style={{ padding: '22px 40px', borderBottom: '1px solid var(--line)' }}
       >
         <Link href="/" aria-label="SkillIn by Amish Sharma, home">
-          <LogoLockup size={30} byline={false} />
+          <LogoLockup size={30} />
         </Link>
         <ProgressTrail stage={stage} />
       </header>

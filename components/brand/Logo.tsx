@@ -138,19 +138,14 @@ export function LogoWordmark({
   );
 }
 
-/**
- * Icon plus name, the lockup used in navigation.
- * The byline sits under the name so the credit reads as authorship.
- */
+/** Icon plus wordmark, the lockup used in navigation. */
 export function LogoLockup({
   size = 30,
   tone = 'ink',
-  byline = true,
   className,
 }: {
   size?: number;
   tone?: 'ink' | 'cream';
-  byline?: boolean;
   className?: string;
 }) {
   return (
@@ -158,7 +153,6 @@ export function LogoLockup({
       <LogoMark size={size} />
       <span className="lp-wordmark">
         <LogoWordmark height={size * 0.64} tone={tone} />
-        {byline ? <span className="lp-byline">by Amish Sharma</span> : null}
       </span>
     </span>
   );
