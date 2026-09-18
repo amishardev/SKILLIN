@@ -3,6 +3,7 @@ import { CAREER_GOALS, CAREER_CATEGORIES, CAREER_GROUPS } from '@/data/careers';
 import { SKILL_MAP, SKILLS } from '@/data/skills';
 import { fullCatalog } from '@/lib/catalog';
 import { PROJECTS } from '@/data/projects';
+import { roleSalary, salaryCoverage } from '@/data/salaries';
 
 /**
  * Structural checks on the taxonomy.
@@ -89,6 +90,50 @@ describe('project templates', () => {
       .filter((c) => !PROJECTS.some((p) => p.careerTags.includes(c.id)))
       .map((c) => c.id);
     expect(orphans).toEqual([]);
+  });
+});
+
+describe('role salaries', () => {
+  it('maps onto real careers, so a rename cannot silently hide a figure', () => {
+    const careers = new Set(CAREER_GOALS.map((c) => c.id));
+    const orphaned = CAREER_GOALS
+      .map((c) => roleSalary(c.id))
+      .filter((s): s is NonNullable<typeof s> => Boolean(s))
+      .filter((s) => !careers.has(s.careerId));
+    expect(orphaned).toEqual([]);
+    expect(salaryCoverage).toBeGreaterThan(30);
+  });
+
+  it('never shows a figure without a source and a date', () => {
+    for (const career of CAREER_GOALS) {
+      const salary = roleSalary(career.id);
+      if (!salary) continue;
+      expect(salary.averageLpa, career.id).toBeGreaterThan(0);
+      expect(salary.source, career.id).toBeTruthy();
+      expect(salary.sourceUrl.startsWith('http'), career.id).toBe(true);
+    }
+  });
+
+  /*
+   * Salary belongs to the moment of choosing a goal. Anywhere else it stops
+   * being context and starts reading as a promise the product cannot keep.
+   */
+  it('is used only in onboarding', async () => {
+    const { readFileSync, readdirSync, statSync } = await import('node:fs');
+    const { join, sep } = await import('node:path');
+    const hits: string[] = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir)) {
+        const path = join(dir, entry);
+        if (statSync(path).isDirectory()) walk(path);
+        else if (/\.tsx?$/.test(entry) && readFileSync(path, 'utf8').includes('roleSalary')) {
+          hits.push(path.split(sep).join('/'));
+        }
+      }
+    };
+    walk('components');
+    walk('app');
+    expect(hits).toEqual(['components/onboarding/CareerStep.tsx']);
   });
 });
 

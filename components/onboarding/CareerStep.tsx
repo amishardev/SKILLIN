@@ -11,6 +11,7 @@ import {
 import { skillName, skillShortName } from '@/data/skills';
 import { Chip } from '@/components/ui/primitives';
 import OnboardingContinue from './OnboardingContinue';
+import { roleSalary } from '@/data/salaries';
 
 /**
  * Career explorer: searchable, grouped by field, with each role's real skill
@@ -137,6 +138,7 @@ function CareerCard({
   onSelect: () => void;
 }) {
   const headline = career.skills.filter((s) => s.required).slice(0, 5);
+  const salary = roleSalary(career.id);
 
   return (
     <motion.button
@@ -171,6 +173,26 @@ function CareerCard({
         ) : null}
       </div>
       <div className="meta">Typically {career.typicalRamp} of focused study</div>
+
+      {/*
+        Salary appears here and nowhere else in the product. It is context for
+        choosing a goal, not a number worth staring at afterwards, and a figure
+        repeated on every screen quietly becomes a promise.
+
+        Only roles with a verified source show anything. The other 35 show
+        nothing at all rather than a placeholder.
+      */}
+      {salary ? (
+        <div className="meta" style={{ marginTop: 4 }}>
+          {'₹'}{salary.averageLpa} LPA average in India, per {salary.source}
+        </div>
+      ) : null}
+
+      {career.credential ? (
+        <div className="meta" style={{ marginTop: 6, color: 'var(--warn)' }}>
+          {career.credential}
+        </div>
+      ) : null}
     </motion.button>
   );
 }
