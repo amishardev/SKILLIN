@@ -1,23 +1,27 @@
 import { RESOURCES, type LearningResource, type ResourceLevel, type ResourceType } from '@/data/resources';
 import { datasetResources } from './dataset';
+import { extendedResources } from './extended';
 import { skillName } from '@/data/skills';
 import { getCareer } from '@/data/careers';
 
 /**
  * The merged learning catalog.
  *
- * Two tiers, deliberately ordered:
+ * Three tiers, deliberately ordered:
  *
  *   1. Curated free resources, official documentation, NPTEL, freeCodeCamp,
  *      university courses. Hand-checked, with verified URLs and real
  *      prerequisites.
- *   2. The imported Coursera datasets, broad coverage and real cover images,
- *      but no URLs and no prerequisite data.
+ *   2. The curated Coursera export. Real course URLs, real instructors, real
+ *      ratings, filtered at ingest and sorted into quality tiers. This is the
+ *      tier that carries business, creative and humanities coverage.
+ *   3. The older imported Coursera datasets. Broad coverage and real cover
+ *      images, but no URLs and no prerequisite data, so they link to a search.
  *
  * The product is free-first: tier 1 wins ties, and the ranking engine's quality
  * scoring already favours reliable publishers over popular ones. Nothing here
- * makes Coursera load-bearing, remove `data/catalog.generated.json` and the
- * app still works on the curated tier alone.
+ * makes Coursera load-bearing, remove either generated file and the app still
+ * works on the tiers that remain.
  */
 
 let merged: LearningResource[] | null = null;
@@ -31,6 +35,15 @@ export function fullCatalog(): LearningResource[] {
   // Engineering Guide" are genuinely different resources and both stay.
   const seen = new Set(curated.map(dedupeKey));
 
+  // Tier 2 before tier 3: where the same course appears in both, the entry with
+  // a real URL should be the one that survives.
+  const extended = extendedResources().filter((r) => {
+    const key = dedupeKey(r);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
   const dataset = datasetResources().filter((r) => {
     const key = dedupeKey(r);
     if (seen.has(key)) return false;
@@ -38,7 +51,7 @@ export function fullCatalog(): LearningResource[] {
     return true;
   });
 
-  merged = [...curated, ...dataset];
+  merged = [...curated, ...extended, ...dataset];
   return merged;
 }
 
