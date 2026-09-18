@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Search } from 'lucide-react';
+import { Search, TrendingUp } from 'lucide-react';
 import CategoryFilter from '@/components/career/CategoryFilter';
 import {
   CAREER_CATEGORIES, CAREER_GOALS,
@@ -182,22 +182,32 @@ function CareerCard({
         Only roles with a verified source show anything. The other 35 show
         nothing at all rather than a placeholder.
 
-        Two numbers, deliberately. The benchmark leads because that is the one
-        worth aiming at, but it carries a SkillIn adjustment and so is labelled
-        as ours and never attributed to anyone. The sourced average sits under
-        it with the name of whoever published it, because that name may only
-        ever appear next to the figure that publisher actually reported.
+        Two numbers, deliberately, and the order is the point. The figure worth
+        aiming at leads, because someone choosing a career should be looking at
+        what the work can pay rather than at the midpoint of today's job ads.
+
+        It is phrased as a target and not as a report. It carries a flat SkillIn
+        adjustment, so it is nobody's published figure and is never attributed
+        to one. The sourced average follows, named, because a publisher's name
+        may only ever sit beside the number that publisher actually gave.
       */}
       {salary ? (
-        <div style={{ marginTop: 6 }}>
-          <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>
-            {'₹'}{salary.displayLpa.toFixed(1)} LPA
-            <span className="meta" style={{ fontWeight: 400, marginLeft: 6 }}>
-              SkillIn career benchmark
+        <div
+          style={{
+            marginTop: 12,
+            paddingTop: 10,
+            borderTop: '1px solid var(--line)',
+          }}
+        >
+          <div className="row-tight" style={{ alignItems: 'baseline', gap: 7 }}>
+            <TrendingUp size={15} strokeWidth={2.2} aria-hidden="true" />
+            <span style={{ fontWeight: 600, fontSize: '1.0625rem', letterSpacing: '-0.02em' }}>
+              {'₹'}{salary.displayLpa.toFixed(1)} LPA
             </span>
+            <span className="meta" style={{ fontWeight: 500 }}>to aim for</span>
           </div>
-          <div className="meta">
-            {salary.source} reports {'₹'}{salary.averageLpa} LPA average
+          <div className="meta" style={{ marginTop: 2 }}>
+            {salary.source} puts the average today at {'₹'}{salary.averageLpa} LPA
           </div>
         </div>
       ) : null}
