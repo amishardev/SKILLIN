@@ -232,6 +232,7 @@ export const SKILLS: Skill[] = [
   { id: 'editing-proofreading', name: 'Editing and Proofreading', category: 'writing', domain: 'creative', aliases: ['copy editing', 'proofreading', 'line editing'] },
   { id: 'journalism', name: 'Journalism', category: 'writing', domain: 'creative', aliases: ['reporting', 'news writing', 'investigative journalism'] },
   { id: 'art-history', name: 'Art History', category: 'humanities', domain: 'humanities', aliases: ['history of art', 'art criticism'] },
+  { id: 'literature', name: 'Literature', category: 'humanities', domain: 'humanities', aliases: ['literary studies', 'literary criticism', 'poetry', 'fiction studies'] },
   { id: 'portfolio-development', name: 'Portfolio Development', category: 'creative', domain: 'creative', aliases: ['portfolio building', 'showreel', 'creative portfolio'] },
 
   // ══════════════════════════════════════════════════════════════

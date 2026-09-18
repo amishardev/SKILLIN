@@ -11,7 +11,8 @@
  * rather than silently compressing a 12-month curriculum into 3 months.
  */
 
-import { RESOURCES, getResource, type LearningResource } from '@/data/resources';
+import { getResource, type LearningResource } from '@/data/resources';
+import { fullCatalog } from '@/lib/catalog';
 import { PROJECTS, type ProjectTemplate } from '@/data/projects';
 import { getCareer, type CareerGoal } from '@/data/careers';
 import { skillName } from '@/data/skills';
@@ -166,6 +167,19 @@ function marginalGain(
  * sequence prerequisite-safe end to end.
  */
 function pickNext(input: PickInput): LearningResource | null {
+  /*
+   * The whole catalog, not only the curated tier.
+   *
+   * This used to rank over the 116 hand-checked resources alone, which was
+   * invisible while every career was a technical one, because that tier is
+   * entirely technical. The moment business, creative and humanities roles
+   * existed, twenty eight of them produced recommendations but an empty
+   * roadmap: the ranker could see courses for them, the planner could not.
+   *
+   * Free-first is preserved by the ranking itself, where publisher reliability
+   * carries the largest share of the quality term, rather than by hiding the
+   * rest of the catalog from this stage.
+   */
   const { ready } = rankResources(
     {
       ...input.context,
@@ -173,7 +187,11 @@ function pickNext(input: PickInput): LearningResource | null {
       career: input.career,
       completedResourceIds: [...input.chosenIds],
     },
-    RESOURCES);
+    // Pre-filtered to what could possibly help. `scoreResource` treats every
+    // resource independently and does no global normalisation, so narrowing the
+    // input here is identical in result to filtering the output, and avoids
+    // scoring four thousand resources once per scheduled milestone.
+    fullCatalog().filter((r) => r.skills.some((skill) => input.gapTargets.has(skill))));
 
   for (const { resource } of ready) {
     if (input.chosenIds.has(resource.id)) continue;
