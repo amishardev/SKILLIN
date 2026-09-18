@@ -22,9 +22,18 @@
 }
 
 .lp-shell {
+  /* The landing page is prose. A line of marketing copy 2,500px wide is not
+     readable, so this one stays capped. */
   max-width: 1360px;
   margin: 0 auto;
   padding: 0 28px 72px;
+}
+
+/* The career explorer is a card grid, not prose, and a grid earns its width.
+   It takes the viewport like the app shell does. */
+.lp-shell-wide {
+  max-width: none;
+  padding-inline: var(--gutter);
 }
 
 /* ─── Nav sits on the cream, outside the dark panel ─── */

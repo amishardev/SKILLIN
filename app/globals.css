@@ -160,7 +160,12 @@ button, input, textarea, select { font: inherit; color: inherit; }
  * page.
  */
 .shell {
-  max-width: 1920px;
+  /*
+   * No max-width. A cap here is what produced the floating capsule on a monitor
+   * wider than the cap: the shell stopped growing and the sage field became a
+   * pair of dead columns. The app takes the viewport less its margin at every
+   * width, which is what "full bleed" was supposed to mean.
+   */
   min-height: calc(100dvh - var(--shell-margin) * 2);
   /* Top aligned, never vertically centred: `auto` on the block axis would
      float the app in the middle of a tall viewport. */

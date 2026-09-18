@@ -85,7 +85,7 @@ export default function GoalsPage() {
 
   return (
     <div className="lp">
-      <div className="lp-shell">
+      <div className="lp-shell lp-shell-wide">
         <header className="lp-nav">
           <Link href="/" aria-label="SkillIn by Amish Sharma, home">
             <LogoLockup size={32} />
