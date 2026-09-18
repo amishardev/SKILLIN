@@ -1,13 +1,157 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Lock } from 'lucide-react';
+
+/**
+ * Showcase profiles for the hero's identity card.
+ *
+ * Three rather than one, because the reach of the product is the thing the hero
+ * has to establish and a single data scientist establishes the opposite. These
+ * illustrate three different starting points; they are not real accounts.
+ */
+const SHOWCASE_PROFILES = [
+  {
+    initials: 'AS',
+    name: 'Amish Sharma',
+    background: 'BS Data Science & AI',
+    skills: ['Python', 'Machine Learning', 'NLP'],
+  },
+  {
+    initials: 'AJ',
+    name: 'Aditya Johri',
+    background: 'Management / Business',
+    skills: ['Strategy', 'Marketing', 'Product Management'],
+  },
+  {
+    initials: 'BK',
+    name: 'Bhupesh Kumar',
+    background: 'Actor & Director',
+    skills: ['Acting', 'Filmmaking', 'Storytelling'],
+  },
+] as const;
+
+/**
+ * How long a profile holds, and how one hands over to the next.
+ *
+ * The two halves are deliberately asymmetric. A symmetric crossfade leaves both
+ * profiles half visible for most of its duration, and since they occupy the same
+ * cell the result is two names printed over each other. Letting the old one
+ * clear before the new one arrives costs about 20ms of empty card, which nobody
+ * sees, and reads as a handover rather than a double exposure.
+ */
+const HOLD_MS = 3000;
+const OUT_S = 0.22;
+const IN_S = 0.34;
+const IN_DELAY_S = 0.24;
+const CYCLE_MS = HOLD_MS + (IN_DELAY_S + IN_S) * 1000;
+
+/**
+ * The rotating contents of the profile card.
+ *
+ * Every profile is rendered into the same grid cell rather than swapped in and
+ * out. Three names of different lengths and three chip sets that wrap to
+ * different numbers of lines would otherwise resize the card three times per
+ * loop, next to fixed cards, on a hero. Stacking them makes the cell as tall as
+ * the tallest profile once, and nothing moves again.
+ */
+function ProfileRotator() {
+  const reduceMotion = useReducedMotion();
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (reduceMotion) return;
+    const id = setInterval(() => setActive((i) => (i + 1) % SHOWCASE_PROFILES.length), CYCLE_MS);
+    return () => clearInterval(id);
+  }, [reduceMotion]);
+
+  // With motion suppressed there is nothing to rotate, so only the first is
+  // rendered. A hidden copy of the other two would still reach a screen reader.
+  const profiles = reduceMotion ? SHOWCASE_PROFILES.slice(0, 1) : SHOWCASE_PROFILES;
+
+  return (
+    <div style={{ display: 'grid' }}>
+      {profiles.map((profile, index) => {
+        const isActive = index === active;
+        /*
+         * Where an inactive layer waits. The one that just left rests above and
+         * the one due next waits below, so the sequence always reads downward
+         * instead of every profile arriving from the same direction.
+         */
+        const parked = index === (active - 1 + profiles.length) % profiles.length ? -6 : 6;
+
+        /*
+         * Plain CSS transitions rather than a motion component. These layers
+         * only move between two fixed states on a timer, which is what a
+         * transition is for, and it keeps the animation off the main thread
+         * without adding a second animation system to the card that already
+         * carries one for its entrance.
+         */
+        const ms = (isActive ? IN_S : OUT_S) * 1000;
+        const delay = isActive ? IN_DELAY_S * 1000 : 0;
+        const eased = `${ms}ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms`;
+
+        return (
+          <div
+            key={profile.name}
+            aria-hidden={!isActive}
+            style={{
+              gridArea: '1 / 1',
+              opacity: isActive ? 1 : 0,
+              transform: `translateY(${isActive ? 0 : parked}px)`,
+              filter: isActive ? 'blur(0px)' : 'blur(1.5px)',
+              transition: reduceMotion
+                ? undefined
+                : `opacity ${eased}, transform ${eased}, filter ${eased}`,
+              pointerEvents: isActive ? undefined : 'none',
+              willChange: 'opacity, transform',
+            }}
+          >
+            <div className="row-tight" style={{ marginBottom: 12 }}>
+              <span
+                aria-hidden="true"
+                style={{
+                  display: 'grid',
+                  placeItems: 'center',
+                  width: 38,
+                  height: 38,
+                  flexShrink: 0,
+                  borderRadius: 999,
+                  background: '#17191D',
+                  color: '#EFEAD9',
+                  fontWeight: 600,
+                  fontSize: 13,
+                }}
+              >
+                {profile.initials}
+              </span>
+              <div>
+                <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>{profile.name}</div>
+                <div style={{ fontSize: '0.75rem', color: '#6B675C' }}>{profile.background}</div>
+              </div>
+            </div>
+
+            <div className="wrap" style={{ gap: 5 }}>
+              {profile.skills.map((s) => (
+                <span key={s} className="lp-tag">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 /**
  * The hero's product preview.
  *
  * Deliberately not a stock illustration: it is a composed set of the actual
- * cards the product produces, arranged so the loop reads left to right, * current state → target → gap → next move. Someone should understand what
+ * cards the product produces, arranged so the loop reads left to right:
+ * current state, target, gap, next move. Someone should understand what
  * SkillIn does without reading a word of body copy.
  *
  * Absolute positioning on desktop, an honest stacked grid below 1080px.
@@ -37,36 +181,7 @@ export default function HeroStage() {
             Your profile
           </div>
 
-          <div className="row-tight" style={{ marginBottom: 12 }}>
-            <span
-              aria-hidden="true"
-              style={{
-                display: 'grid',
-                placeItems: 'center',
-                width: 38,
-                height: 38,
-                borderRadius: 999,
-                background: '#17191D',
-                color: '#EFEAD9',
-                fontWeight: 600,
-                fontSize: 13,
-              }}
-            >
-              AS
-            </span>
-            <div>
-              <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>Amish Sharma</div>
-              <div style={{ fontSize: '0.75rem', color: '#6B675C' }}>BS Data Science &amp; AI</div>
-            </div>
-          </div>
-
-          <div className="wrap" style={{ gap: 5 }}>
-            {['Python', 'Machine Learning', 'NLP'].map((s) => (
-              <span key={s} className="lp-tag">
-                {s}
-              </span>
-            ))}
-          </div>
+          <ProfileRotator />
 
           <div
             style={{
