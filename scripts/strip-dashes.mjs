@@ -22,7 +22,9 @@ import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
 const EXTENSIONS = new Set(['.ts', '.tsx', '.mjs', '.css', '.md', '.json']);
-const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'tasks', 'dist', 'build']);
+// `dataset` holds raw third-party source files. They are inputs to the ingest
+// script, not product content, so their punctuation is not ours to rewrite.
+const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'tasks', 'dist', 'build', 'dataset']);
 
 const EM = String.fromCharCode(0x2014);
 const EN = String.fromCharCode(0x2013);

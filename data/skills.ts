@@ -10,7 +10,10 @@
 export type SkillCategory =
   | 'language' | 'ai' | 'data' | 'math' | 'library' | 'framework'
   | 'web' | 'mobile' | 'devops' | 'cloud' | 'database' | 'security'
-  | 'systems' | 'hardware' | 'design' | 'product' | 'concept' | 'tool';
+  | 'systems' | 'hardware' | 'design' | 'product' | 'concept' | 'tool'
+  // Non-technical domains. Same structure, same normalisation, same graph.
+  | 'business' | 'marketing' | 'finance' | 'people' | 'creative'
+  | 'media' | 'writing' | 'humanities' | 'social-science';
 
 export interface Skill {
   id: string;
@@ -75,7 +78,7 @@ export const SKILLS: Skill[] = [
   { id: 'speech-processing', name: 'Speech Processing', category: 'ai', domain: 'ai', aliases: ['speech recognition', 'asr', 'text to speech'] },
 
   // ─── Data ───
-  { id: 'data-analysis', name: 'Data Analysis', category: 'data', domain: 'data', aliases: ['data analytics', 'analytics', 'exploratory data analysis', 'eda'] },
+  { id: 'data-analysis', name: 'Data Analysis', category: 'data', domain: 'data', aliases: ['data analytics', 'analytics', 'exploratory data analysis', 'eda', 'business intelligence tools'] },
   { id: 'data-visualization', name: 'Data Visualization', category: 'data', domain: 'data', aliases: ['dataviz', 'data viz', 'charting', 'power bi', 'tableau', 'matplotlib', 'seaborn', 'plotly', 'looker'] },
   { id: 'feature-engineering', name: 'Feature Engineering', category: 'data', domain: 'data', aliases: ['feature selection', 'feature extraction', 'smote', 'feature scaling', 'one-hot encoding'] },
   { id: 'data-engineering', name: 'Data Engineering', category: 'data', domain: 'data', aliases: ['etl', 'elt', 'data pipelines'] },
@@ -167,6 +170,100 @@ export const SKILLS: Skill[] = [
   { id: 'testing', name: 'Software Testing', category: 'concept', domain: 'general', aliases: ['unit testing', 'tdd', 'integration testing', 'qa', 'jest', 'pytest'] },
   { id: 'agile', name: 'Agile & Scrum', category: 'concept', domain: 'general', aliases: ['scrum', 'kanban', 'sprint planning'] },
   { id: 'research-methods', name: 'Research Methods', category: 'concept', domain: 'research', aliases: ['paper writing', 'literature review', 'academic research'] },
+
+  // ══════════════════════════════════════════════════════════════
+  // Business and management
+  //
+  // Same shape as every technical skill above. Nothing about the engine is
+  // domain specific, so a marketing gap is computed exactly like a Kubernetes
+  // gap: normalise the name, score the evidence, subtract from what the role
+  // asks for.
+  // ══════════════════════════════════════════════════════════════
+  { id: 'business-fundamentals', name: 'Business Fundamentals', category: 'business', domain: 'business', aliases: ['business basics', 'business studies', 'commerce'] },
+  { id: 'business-strategy', name: 'Business Strategy', category: 'business', domain: 'business', aliases: ['corporate strategy', 'strategic management', 'competitive strategy', 'strategy', 'strategic thinking', 'strategic planning', 'business model', 'innovation', 'competitive advantage'] },
+  { id: 'financial-accounting', name: 'Financial Accounting', category: 'finance', domain: 'business', aliases: ['accounting', 'bookkeeping', 'financial statements', 'financial statement', 'accounting principles'] },
+  { id: 'corporate-finance', name: 'Corporate Finance', category: 'finance', domain: 'business', aliases: ['finance', 'capital budgeting', 'valuation', 'dcf'] },
+  { id: 'financial-modelling', name: 'Financial Modelling', category: 'finance', domain: 'business', aliases: ['financial modeling', 'excel modelling', 'three statement model'], prerequisites: ['financial-accounting'] },
+  { id: 'investment-analysis', name: 'Investment Analysis', category: 'finance', domain: 'business', aliases: ['equity research', 'portfolio management', 'securities analysis'], prerequisites: ['corporate-finance'] },
+  { id: 'economics', name: 'Economics', category: 'business', domain: 'business', aliases: ['microeconomics', 'macroeconomics', 'econ'] },
+  { id: 'marketing-fundamentals', name: 'Marketing Fundamentals', category: 'marketing', domain: 'business', aliases: ['marketing basics', 'marketing principles', '4ps', 'marketing', 'marketing management', 'marketing strategies'] },
+  { id: 'consumer-behaviour', name: 'Consumer Behaviour', category: 'marketing', domain: 'business', aliases: ['consumer behavior', 'buyer psychology'], prerequisites: ['marketing-fundamentals'] },
+  { id: 'market-research', name: 'Market Research', category: 'marketing', domain: 'business', aliases: ['market analysis', 'competitive analysis', 'survey research', 'customer research'] },
+  { id: 'brand-strategy', name: 'Brand Strategy', category: 'marketing', domain: 'business', aliases: ['branding', 'brand management', 'brand positioning'], prerequisites: ['marketing-fundamentals'] },
+  { id: 'digital-marketing', name: 'Digital Marketing', category: 'marketing', domain: 'business', aliases: ['online marketing', 'social media marketing', 'email marketing', 'social media', 'influencer marketing'] },
+  { id: 'seo', name: 'SEO', category: 'marketing', domain: 'business', aliases: ['search engine optimization', 'search engine optimisation', 'sem'] },
+  { id: 'content-strategy', name: 'Content Strategy', category: 'marketing', domain: 'business', aliases: ['content marketing', 'editorial strategy'] },
+  { id: 'performance-marketing', name: 'Performance Marketing', category: 'marketing', domain: 'business', aliases: ['paid ads', 'ppc', 'google ads', 'meta ads', 'growth marketing'], prerequisites: ['digital-marketing'] },
+  { id: 'marketing-analytics', name: 'Marketing Analytics', category: 'marketing', domain: 'business', aliases: ['google analytics', 'attribution', 'campaign analytics'] },
+  { id: 'sales', name: 'Sales', category: 'business', domain: 'business', aliases: ['b2b sales', 'selling', 'account management', 'crm', 'sales management', 'customer relationship management', 'business development', 'negotiation skills'] },
+  { id: 'operations-management', name: 'Operations Management', category: 'business', domain: 'business', aliases: ['operations', 'process improvement', 'lean', 'six sigma', 'planning', 'quality management', 'change management', 'operational efficiency'] },
+  { id: 'supply-chain', name: 'Supply Chain Management', category: 'business', domain: 'business', aliases: ['logistics', 'procurement', 'inventory management'] },
+  { id: 'human-resources', name: 'Human Resources', category: 'people', domain: 'business', aliases: ['hr', 'hrm', 'people operations', 'human resources (hr)', 'hr management', 'people management', 'employee engagement', 'compensation and benefits'] },
+  { id: 'talent-acquisition', name: 'Talent Acquisition', category: 'people', domain: 'business', aliases: ['recruiting', 'recruitment', 'hiring', 'sourcing'], prerequisites: ['human-resources'] },
+  { id: 'organisational-behaviour', name: 'Organisational Behaviour', category: 'people', domain: 'business', aliases: ['organizational behavior', 'org behaviour', 'workplace psychology'] },
+  { id: 'leadership', name: 'Leadership', category: 'people', domain: 'business', aliases: ['people management', 'team leadership', 'managing people', 'management', 'leadership and management', 'team management', 'people leadership', 'leadership development', 'team building', 'coaching', 'mentorship', 'delegation'] },
+  { id: 'negotiation', name: 'Negotiation', category: 'business', domain: 'business', aliases: ['deal making', 'bargaining'] },
+  { id: 'entrepreneurship', name: 'Entrepreneurship', category: 'business', domain: 'business', aliases: ['startup', 'founding', 'venture building', 'startups', 'venture capital', 'new business development'] },
+  { id: 'project-management', name: 'Project Management', category: 'business', domain: 'business', aliases: ['pmp', 'programme management', 'program management', 'project planning', 'agile project management', 'scope management'] },
+  { id: 'stakeholder-management', name: 'Stakeholder Management', category: 'business', domain: 'business', aliases: ['stakeholder communication', 'client management'] },
+  { id: 'business-analysis', name: 'Business Analysis', category: 'business', domain: 'business', aliases: ['requirements gathering', 'process mapping', 'ba', 'business analytics', 'requirements analysis', 'process analysis'] },
+
+  // ══════════════════════════════════════════════════════════════
+  // Creative and media
+  // ══════════════════════════════════════════════════════════════
+  { id: 'design-fundamentals', name: 'Design Fundamentals', category: 'creative', domain: 'creative', aliases: ['design basics', 'design principles', 'composition', 'graphic design', 'visual arts', 'art', 'creativity', 'layout design', 'visual hierarchy'] },
+  { id: 'typography', name: 'Typography', category: 'creative', domain: 'creative', aliases: ['type design', 'lettering', 'typefaces'], prerequisites: ['design-fundamentals'] },
+  { id: 'colour-theory', name: 'Colour Theory', category: 'creative', domain: 'creative', aliases: ['color theory', 'colour', 'palette design'], prerequisites: ['design-fundamentals'] },
+  { id: 'brand-identity', name: 'Brand Identity Design', category: 'creative', domain: 'creative', aliases: ['logo design', 'identity design', 'visual identity'], prerequisites: ['design-fundamentals'] },
+  { id: 'illustration', name: 'Illustration', category: 'creative', domain: 'creative', aliases: ['drawing', 'digital illustration', 'concept art'] },
+  { id: 'adobe-creative', name: 'Adobe Creative Suite', category: 'creative', domain: 'creative', aliases: ['photoshop', 'illustrator', 'indesign', 'after effects', 'premiere'] },
+  { id: 'motion-design', name: 'Motion Design', category: 'creative', domain: 'creative', aliases: ['motion graphics', 'animation', '2d animation'], prerequisites: ['design-fundamentals'] },
+  { id: 'photography', name: 'Photography', category: 'media', domain: 'creative', aliases: ['photo', 'digital photography', 'composition photography', 'photo composition'] },
+  { id: 'photo-editing', name: 'Photo Editing', category: 'media', domain: 'creative', aliases: ['lightroom', 'retouching', 'photo post processing'], prerequisites: ['photography'] },
+  { id: 'videography', name: 'Videography', category: 'media', domain: 'creative', aliases: ['cinematography', 'video production', 'filming'] },
+  { id: 'video-editing', name: 'Video Editing', category: 'media', domain: 'creative', aliases: ['film editing', 'post production', 'davinci resolve', 'final cut', 'video production'] },
+  { id: 'screenwriting', name: 'Screenwriting', category: 'writing', domain: 'creative', aliases: ['scriptwriting', 'screenplay'] },
+  { id: 'music-theory', name: 'Music Theory', category: 'creative', domain: 'creative', aliases: ['harmony', 'composition theory', 'notation', 'music', 'musicianship'] },
+  { id: 'music-production', name: 'Music Production', category: 'creative', domain: 'creative', aliases: ['daw', 'ableton', 'fl studio', 'logic pro', 'beatmaking'] },
+  { id: 'sound-design', name: 'Sound Design', category: 'media', domain: 'creative', aliases: ['audio design', 'foley', 'audio engineering'] },
+  { id: 'mixing-mastering', name: 'Mixing and Mastering', category: 'media', domain: 'creative', aliases: ['audio mixing', 'mastering'], prerequisites: ['music-production'] },
+  { id: 'creative-writing', name: 'Creative Writing', category: 'writing', domain: 'creative', aliases: ['fiction writing', 'storytelling', 'narrative writing', 'writing', 'narrative'] },
+  { id: 'copywriting', name: 'Copywriting', category: 'writing', domain: 'creative', aliases: ['ad copy', 'sales copy', 'conversion copywriting'] },
+  { id: 'editing-proofreading', name: 'Editing and Proofreading', category: 'writing', domain: 'creative', aliases: ['copy editing', 'proofreading', 'line editing'] },
+  { id: 'journalism', name: 'Journalism', category: 'writing', domain: 'creative', aliases: ['reporting', 'news writing', 'investigative journalism'] },
+  { id: 'art-history', name: 'Art History', category: 'humanities', domain: 'humanities', aliases: ['history of art', 'art criticism'] },
+  { id: 'portfolio-development', name: 'Portfolio Development', category: 'creative', domain: 'creative', aliases: ['portfolio building', 'showreel', 'creative portfolio'] },
+
+  // ══════════════════════════════════════════════════════════════
+  // Humanities and social sciences
+  // ══════════════════════════════════════════════════════════════
+  { id: 'psychology', name: 'Psychology', category: 'social-science', domain: 'humanities', aliases: ['general psychology', 'behavioural science', 'behavioral science', 'behavioural psychology', 'behavioral psychology', 'emotional intelligence'] },
+  { id: 'cognitive-psychology', name: 'Cognitive Psychology', category: 'social-science', domain: 'humanities', aliases: ['cognition', 'cognitive science'], prerequisites: ['psychology'] },
+  { id: 'sociology', name: 'Sociology', category: 'social-science', domain: 'humanities', aliases: ['social theory', 'society studies'] },
+  { id: 'history', name: 'History', category: 'humanities', domain: 'humanities', aliases: ['historical studies', 'historiography'] },
+  { id: 'philosophy', name: 'Philosophy', category: 'humanities', domain: 'humanities', aliases: ['ethics', 'logic', 'metaphysics'] },
+  { id: 'political-science', name: 'Political Science', category: 'social-science', domain: 'humanities', aliases: ['politics', 'political theory', 'public policy'] },
+  { id: 'cultural-studies', name: 'Cultural Studies', category: 'humanities', domain: 'humanities', aliases: ['anthropology', 'cultural theory'] },
+  { id: 'linguistics', name: 'Linguistics', category: 'humanities', domain: 'humanities', aliases: ['language studies', 'phonetics', 'syntax'] },
+  { id: 'communication', name: 'Communication', category: 'humanities', domain: 'humanities', aliases: ['public speaking', 'presentation skills', 'business communication', 'presentation', 'presentations', 'interpersonal communication', 'business writing', 'collaboration', 'teamwork'] },
+  { id: 'qualitative-research', name: 'Qualitative Research', category: 'social-science', domain: 'humanities', aliases: ['interviews', 'ethnography', 'thematic analysis'], prerequisites: ['research-methods'] },
+  { id: 'quantitative-research', name: 'Quantitative Research', category: 'social-science', domain: 'humanities', aliases: ['survey design', 'experimental design', 'psychometrics'], prerequisites: ['research-methods', 'statistics'] },
+  { id: 'academic-writing', name: 'Academic Writing', category: 'writing', domain: 'humanities', aliases: ['thesis writing', 'dissertation', 'scholarly writing'] },
+
+  // ══════════════════════════════════════════════════════════════
+  // Cross cutting skills
+  //
+  // Added because the catalog genuinely teaches them and courses were being
+  // dropped for having no taxonomy match. The alternative was to loosen the
+  // matcher, which would have tagged courses with skills they do not teach.
+  // ══════════════════════════════════════════════════════════════
+  { id: 'spreadsheets', name: 'Spreadsheets', category: 'tool', domain: 'business', aliases: ['microsoft excel', 'excel', 'google sheets', 'pivot tables'] },
+  { id: 'critical-thinking', name: 'Critical Thinking', category: 'concept', domain: 'general', aliases: ['problem solving', 'analytical thinking', 'decision-making', 'decision making', 'reasoning'] },
+  { id: 'design-thinking', name: 'Design Thinking', category: 'concept', domain: 'design', aliases: ['human centered design', 'human-centred design', 'ideation'] },
+  { id: 'risk-management', name: 'Risk Management', category: 'business', domain: 'business', aliases: ['risk analysis', 'risk assessment', 'compliance'] },
+  { id: 'time-management', name: 'Time Management', category: 'concept', domain: 'general', aliases: ['time management', 'productivity', 'goal setting', 'prioritisation', 'prioritization'] },
+  { id: 'teaching', name: 'Teaching and Instruction', category: 'humanities', domain: 'humanities', aliases: ['pedagogy', 'instructional design', 'curriculum design', 'education'] },
+  { id: 'law-basics', name: 'Legal Fundamentals', category: 'humanities', domain: 'humanities', aliases: ['law', 'business law', 'contract law', 'intellectual property'] },
 ];
 
 /** id → Skill */

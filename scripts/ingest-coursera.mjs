@@ -25,7 +25,9 @@ import { pathToFileURL } from 'node:url';
 const skillsSrc = readFileSync(new URL('../data/skills.ts', import.meta.url), 'utf8');
 
 const SKILLS = [];
-const skillRe = /\{ id: '([a-z0-9-]+)', name: '([^']+)', category: '[a-z]+', domain: '[a-z]+', aliases: \[([^\]]*)\]/g;
+// Categories and domains may be hyphenated (`social-science`), so both
+// character classes allow a dash. Without it six skills were silently skipped.
+const skillRe = /\{ id: '([a-z0-9-]+)', name: '([^']+)', category: '[a-z-]+', domain: '[a-z-]+', aliases: \[([^\]]*)\]/g;
 for (const m of skillsSrc.matchAll(skillRe)) {
   const aliases = [...m[3].matchAll(/'((?:[^'\\]|\\.)*)'/g)].map((a) => a[1]);
   SKILLS.push({ id: m[1], name: m[2].replace(/\\'/g, "'"), aliases });

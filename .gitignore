@@ -41,3 +41,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Raw third-party course datasets. Inputs to scripts/ingest-catalog.mjs, not
+# product code: ~200 MB, not ours to redistribute, and the generated catalog in
+# data/ is what the app actually reads.
+/dataset
