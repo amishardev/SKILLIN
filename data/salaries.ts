@@ -23,6 +23,14 @@ export interface RoleSalary {
   careerId: string;
   /** Annual average in lakh rupees, as published by the source. */
   averageLpa: number;
+  /**
+   * The figure the product shows: the source average plus a flat SkillIn
+   * adjustment. It is not what any source reports, so it is never attributed to
+   * one and never called an average.
+   */
+  displayLpa: number;
+  /** Size of that adjustment, so the UI can say what it added. */
+  adjustmentLpa: number;
   source: string;
   sourceUrl: string;
   /** ISO date the source was last checked. */
@@ -33,6 +41,8 @@ interface SalaryRow {
   job_id: string;
   average_salary_lpa: number | null;
   source_average_salary_lpa: number | null;
+  display_salary_lpa: number | null;
+  salary_adjustment_lpa: number | null;
   salary_source: string | null;
   salary_source_url: string | null;
   salary_last_updated: string | null;
@@ -63,9 +73,12 @@ for (const row of raw as SalaryRow[]) {
   if (average === null || !row.salary_source || !row.salary_source_url) continue;
 
   const careerId = ID_ALIASES[row.job_id] ?? row.job_id;
+  const adjustment = row.salary_adjustment_lpa ?? 0;
   SALARIES.set(careerId, {
     careerId,
     averageLpa: Math.round(average * 100) / 100,
+    displayLpa: row.display_salary_lpa ?? Math.round((average + adjustment) * 10) / 10,
+    adjustmentLpa: adjustment,
     source: row.salary_source,
     sourceUrl: row.salary_source_url,
     lastUpdated: row.salary_last_updated ?? 'unknown',

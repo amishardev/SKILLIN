@@ -8,13 +8,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "ai-researcher",
@@ -25,13 +28,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 9.01138,
     "source_average_salary_lpa": 8.01138,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Salary.com",
     "salary_source_url": "https://www.salary.com/research/in/ai-researcher-salary",
     "salary_last_updated": "2025-04-22",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹9.01 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 11.5,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "backend-developer",
@@ -42,13 +48,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 4.59028,
     "source_average_salary_lpa": 3.590282,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/back-end-developer/salaries",
     "salary_last_updated": "2026-05-20",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹4.59 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 7.1,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "bioinformatics-engineer",
@@ -59,13 +68,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 10.48169,
     "source_average_salary_lpa": 9.48169,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/bioinformatics-engineer/salaries",
     "salary_last_updated": "2025-04-26",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹10.48 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 13,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "blockchain-developer",
@@ -76,13 +88,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "cloud-engineer",
@@ -93,13 +108,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 11.55395,
     "source_average_salary_lpa": 10.55395,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/cloud-engineer/salaries",
     "salary_last_updated": "2026-07-30",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹11.55 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 14.1,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "computer-vision-engineer",
@@ -110,13 +128,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "cybersecurity-engineer",
@@ -127,13 +148,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 6.8737,
     "source_average_salary_lpa": 5.8737,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/cybersecurity-engineer/salaries",
     "salary_last_updated": "2026-02-03",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹6.87 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 9.4,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "data-analyst",
@@ -144,13 +168,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 7.56501,
     "source_average_salary_lpa": 6.56501,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/data-analyst/salaries",
     "salary_last_updated": "2026-08-02",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹7.57 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 10.1,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "data-engineer",
@@ -161,13 +188,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 10.83369,
     "source_average_salary_lpa": 9.83369,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/data-engineer/salaries",
     "salary_last_updated": "2026-08-01",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹10.83 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 13.3,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "data-scientist",
@@ -178,13 +208,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 13.05088,
     "source_average_salary_lpa": 12.05088,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/data-scientist/salaries",
     "salary_last_updated": "2026-08-02",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹13.05 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 15.6,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "devops-engineer",
@@ -195,13 +228,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 8.85897,
     "source_average_salary_lpa": 7.85897,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/devops-engineer/salaries",
     "salary_last_updated": "2026-07-31",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹8.86 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 11.4,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "embedded-systems-engineer",
@@ -212,13 +248,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 5.5235,
     "source_average_salary_lpa": 4.5235,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career-advice/finding-a-job/how-to-become-an-embedded-systems-engineer",
     "salary_last_updated": "2026-06-16",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹5.52 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 8,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "frontend-developer",
@@ -229,13 +268,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 6.97231,
     "source_average_salary_lpa": 5.97231,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/front-end-developer/salaries",
     "salary_last_updated": "2026-09-04",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹6.97 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 9.5,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "full-stack-developer",
@@ -246,13 +288,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 4.6984,
     "source_average_salary_lpa": 3.6984,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/full-stack-developer/salaries",
     "salary_last_updated": "2026-04-17",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹4.70 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 7.2,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "game-developer",
@@ -263,13 +308,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "generative-ai-engineer",
@@ -280,13 +328,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "iot-engineer",
@@ -297,13 +348,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 5.02528,
     "source_average_salary_lpa": 4.02528,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/iot-engineer/salaries",
     "salary_last_updated": "2025-11-05",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹5.03 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 7.5,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "machine-learning-engineer",
@@ -314,13 +368,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 12.40204,
     "source_average_salary_lpa": 11.40204,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/machine-learning-engineer/salaries",
     "salary_last_updated": "2026-07-29",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹12.40 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 14.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "mlops-engineer",
@@ -331,13 +388,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "mobile-app-developer",
@@ -347,14 +407,18 @@
     "currency": "INR",
     "salary_unit": "LPA",
     "average_salary_lpa": 1.40356,
-    "source_average_salary_lpa": 0.40356000000000003,
-    "adjustment_lpa": 1.0,
+    "source_average_salary_lpa": 4.84,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/mobile-developer/salaries",
     "salary_last_updated": "2026-02-20",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹1.40 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "salary_unit_note": "Source publishes a monthly figure; annualised here.",
+    "display_salary_lpa": 8.3,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "nlp-engineer",
@@ -365,13 +429,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "penetration-tester",
@@ -382,13 +449,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 18.32412,
     "source_average_salary_lpa": 17.32412,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/penetration-tester/salaries",
     "salary_last_updated": "2026-01-18",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹18.32 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 20.8,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "product-designer",
@@ -399,13 +469,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 6.96925,
     "source_average_salary_lpa": 5.96925,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/product-designer/salaries",
     "salary_last_updated": "2026-05-29",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹6.97 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 9.5,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "quantum-computing-engineer",
@@ -416,13 +489,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 9.37479,
     "source_average_salary_lpa": 8.37479,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Salary.com",
     "salary_source_url": "https://www.salary.com/research/in/quantum-computing-engineer-salary",
     "salary_last_updated": "2025-04-22",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹9.37 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 11.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "robotics-engineer",
@@ -433,13 +509,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.82624,
     "source_average_salary_lpa": 2.82624,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/robotics-engineer/salaries",
     "salary_last_updated": "2026-02-12",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.83 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 6.3,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "security-operations-analyst",
@@ -450,13 +529,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 9.9922,
     "source_average_salary_lpa": 8.9922,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/security-analyst/salaries",
     "salary_last_updated": "2026-07-28",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹9.99 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 12.5,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "site-reliability-engineer",
@@ -467,13 +549,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 13.56674,
     "source_average_salary_lpa": 12.56674,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/site-reliability-engineer/salaries",
     "salary_last_updated": "2026-07-30",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹13.57 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 16.1,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "software-engineer",
@@ -484,13 +569,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 9.877,
     "source_average_salary_lpa": 8.877,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/software-engineer/salaries",
     "salary_last_updated": "2026-08-03",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹9.88 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 12.4,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "technical-product-manager",
@@ -501,13 +589,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.41407,
     "source_average_salary_lpa": 2.41407,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/technical-product-manager/salaries",
     "salary_last_updated": "2025-12-09",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.41 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 5.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "technical-writer",
@@ -518,13 +609,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 5.76742,
     "source_average_salary_lpa": 4.76742,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/technical-writer/salaries",
     "salary_last_updated": "2026-09-10",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹5.77 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 8.3,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "ux-engineer",
@@ -535,13 +629,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden."
+    "caveat": "No defensible role-specific average salary was verified in the checked sources; keep salary hidden.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "brand-manager",
@@ -552,13 +649,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 8.28815,
     "source_average_salary_lpa": 7.28815,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/brand-manager/salaries",
     "salary_last_updated": "2026-05-21",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹8.29 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 10.8,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "business-analyst",
@@ -569,13 +669,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 10.09127,
     "source_average_salary_lpa": 9.09127,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/business-analyst/salaries",
     "salary_last_updated": "2026-09-03",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹10.09 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 12.6,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "digital-marketing-specialist",
@@ -586,13 +689,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "financial-analyst",
@@ -603,13 +709,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 6.54225,
     "source_average_salary_lpa": 5.54225,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/financial-analyst/salaries",
     "salary_last_updated": "2026-08-31",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹6.54 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "founder",
@@ -620,13 +729,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 6.9205,
     "source_average_salary_lpa": 5.9205,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/founder/salaries",
     "salary_last_updated": "2026-01-23",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹6.92 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 9.4,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "growth-manager",
@@ -637,13 +749,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "hr-manager",
@@ -654,13 +769,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "investment-analyst",
@@ -671,13 +789,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "management-consultant",
@@ -688,13 +809,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 20.83781,
     "source_average_salary_lpa": 19.83781,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/management-consultant/salaries",
     "salary_last_updated": "2026-08-24",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹20.84 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 23.3,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "marketing-manager",
@@ -705,13 +829,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "operations-manager",
@@ -722,13 +849,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 4.9324,
     "source_average_salary_lpa": 3.9324000000000003,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/operations-manager/salaries",
     "salary_last_updated": "2026-06-05",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹4.93 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 7.4,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "project-manager",
@@ -739,13 +869,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "sales-manager",
@@ -756,13 +889,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 4.42108,
     "source_average_salary_lpa": 3.42108,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/sales-manager/salaries",
     "salary_last_updated": "2026-05-21",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹4.42 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 6.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "strategy-analyst",
@@ -773,13 +909,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "supply-chain-manager",
@@ -790,13 +929,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 5.47571,
     "source_average_salary_lpa": 4.47571,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/supply-chain-manager/salaries",
     "salary_last_updated": "2026-02-19",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹5.48 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 8,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "talent-acquisition-specialist",
@@ -807,13 +949,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "art-director",
@@ -824,13 +969,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "content-creator",
@@ -841,13 +989,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "copywriter",
@@ -858,13 +1009,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "editor",
@@ -875,13 +1029,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.17572,
     "source_average_salary_lpa": 2.17572,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/editor/salaries",
     "salary_last_updated": "2026-02-19",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.18 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 5.7,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "film-editor",
@@ -892,13 +1049,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "filmmaker",
@@ -909,13 +1069,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "graphic-designer",
@@ -926,13 +1089,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.28792,
     "source_average_salary_lpa": 2.28792,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/graphic-designer/salaries",
     "salary_last_updated": "2026-09-04",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.29 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 5.8,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "illustrator",
@@ -943,13 +1109,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "journalist",
@@ -960,13 +1129,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.4462,
     "source_average_salary_lpa": 2.4462,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/journalist/salaries",
     "salary_last_updated": "2026-02-02",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.45 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 5.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "motion-designer",
@@ -977,13 +1149,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "music-producer",
@@ -994,13 +1169,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "photographer",
@@ -1011,13 +1189,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.3748,
     "source_average_salary_lpa": 2.3748,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/photographer/salaries",
     "salary_last_updated": "2026-01-22",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.37 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 5.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "sound-designer",
@@ -1028,13 +1209,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "ux-ui-designer",
@@ -1045,13 +1229,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.61794,
     "source_average_salary_lpa": 2.61794,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/ux%2Fui-designer/salaries",
     "salary_last_updated": "2026-02-26",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.62 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 6.1,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "writer",
@@ -1062,13 +1249,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 3.18556,
     "source_average_salary_lpa": 2.18556,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/writer/salaries",
     "salary_last_updated": "2026-02-05",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹3.19 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 5.7,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   },
   {
     "job_id": "art-historian",
@@ -1079,13 +1269,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "communication-specialist",
@@ -1096,13 +1289,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "cultural-researcher",
@@ -1113,13 +1309,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "historian",
@@ -1130,13 +1329,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "language-specialist",
@@ -1147,13 +1349,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "philosopher",
@@ -1164,13 +1369,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "policy-analyst",
@@ -1181,13 +1389,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "psychology-researcher",
@@ -1198,13 +1409,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "social-researcher",
@@ -1215,13 +1429,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "ux-researcher",
@@ -1232,13 +1449,16 @@
     "salary_unit": "LPA",
     "average_salary_lpa": null,
     "source_average_salary_lpa": null,
-    "adjustment_lpa": 0.0,
+    "adjustment_lpa": 0,
     "salary_source": null,
     "salary_source_url": null,
     "salary_last_updated": null,
     "data_status": "no_verified_average",
     "display_label": "Salary data unavailable",
-    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average."
+    "caveat": "Existing record is median-only or lacks a verified average; do not display it as an average.",
+    "display_salary_lpa": null,
+    "salary_adjustment_lpa": null,
+    "salary_adjustment_reason": null
   },
   {
     "job_id": "product-manager",
@@ -1249,12 +1469,15 @@
     "salary_unit": "LPA",
     "average_salary_lpa": 14.41149,
     "source_average_salary_lpa": 13.41149,
-    "adjustment_lpa": 1.0,
+    "adjustment_lpa": 1,
     "salary_source": "Indeed India",
     "salary_source_url": "https://in.indeed.com/career/product-manager/salaries",
     "salary_last_updated": "2026-08-28",
     "data_status": "source_average_plus_1_lpa_adjustment",
     "display_label": "₹14.41 LPA average",
-    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request."
+    "caveat": "SkillIn display value = source average + ₹1 LPA, per product configuration request.",
+    "display_salary_lpa": 16.9,
+    "salary_adjustment_lpa": 3.5,
+    "salary_adjustment_reason": "SkillIn aspirational display benchmark"
   }
 ]

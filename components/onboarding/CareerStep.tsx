@@ -181,10 +181,24 @@ function CareerCard({
 
         Only roles with a verified source show anything. The other 35 show
         nothing at all rather than a placeholder.
+
+        Two numbers, deliberately. The benchmark leads because that is the one
+        worth aiming at, but it carries a SkillIn adjustment and so is labelled
+        as ours and never attributed to anyone. The sourced average sits under
+        it with the name of whoever published it, because that name may only
+        ever appear next to the figure that publisher actually reported.
       */}
       {salary ? (
-        <div className="meta" style={{ marginTop: 4 }}>
-          {'₹'}{salary.averageLpa} LPA average in India, per {salary.source}
+        <div style={{ marginTop: 6 }}>
+          <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>
+            {'₹'}{salary.displayLpa.toFixed(1)} LPA
+            <span className="meta" style={{ fontWeight: 400, marginLeft: 6 }}>
+              SkillIn career benchmark
+            </span>
+          </div>
+          <div className="meta">
+            {salary.source} reports {'₹'}{salary.averageLpa} LPA average
+          </div>
         </div>
       ) : null}
 

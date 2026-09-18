@@ -4,6 +4,7 @@ import { SKILL_MAP, SKILLS } from '@/data/skills';
 import { fullCatalog } from '@/lib/catalog';
 import { PROJECTS } from '@/data/projects';
 import { roleSalary, salaryCoverage } from '@/data/salaries';
+import raw from '@/data/salaries.generated.json';
 
 /**
  * Structural checks on the taxonomy.
@@ -112,6 +113,42 @@ describe('role salaries', () => {
       expect(salary.source, career.id).toBeTruthy();
       expect(salary.sourceUrl.startsWith('http'), career.id).toBe(true);
     }
+  });
+
+  /*
+   * The benchmark is the source average plus a flat SkillIn adjustment. Two
+   * things have to stay true about it: the sourced figure it was derived from
+   * is still there to be shown, and no role without a verified figure acquires
+   * one. An adjustment applied to nothing would be a salary we made up outright.
+   */
+  it('keeps the sourced average alongside the adjusted benchmark', () => {
+    for (const career of CAREER_GOALS) {
+      const salary = roleSalary(career.id);
+      if (!salary) continue;
+      expect(salary.displayLpa, career.id).toBeCloseTo(salary.averageLpa + salary.adjustmentLpa, 1);
+      expect(salary.displayLpa, career.id).toBeGreaterThan(0);
+      expect(salary.averageLpa, career.id).toBeGreaterThan(0);
+    }
+  });
+
+  it('invents no benchmark for a role with no verified figure', () => {
+    const rows = raw as Array<{ source_average_salary_lpa: number | null; display_salary_lpa: number | null }>;
+    const invented = rows.filter((r) => r.source_average_salary_lpa === null && r.display_salary_lpa !== null);
+    expect(invented).toEqual([]);
+  });
+
+  /*
+   * Indeed publishes some roles monthly. One of them, mobile developer, was
+   * read as annual and shipped as 0.40 LPA, which is a wage no developer in
+   * India has ever been paid. Anything under a lakh and a half a year is that
+   * same mistake rather than a real figure.
+   */
+  it('carries no figure that is really a monthly wage', () => {
+    const suspicious = CAREER_GOALS
+      .map((c) => [c.id, roleSalary(c.id)] as const)
+      .filter(([, s]) => s && s.averageLpa < 1.5)
+      .map(([id]) => id);
+    expect(suspicious).toEqual([]);
   });
 
   /*
