@@ -41,11 +41,26 @@ if (SKILLS.length < 150) {
   throw new Error(`Only parsed ${SKILLS.length} skills from data/skills.ts, the shape changed.`);
 }
 
+/**
+ * Alias to skill id.
+ *
+ * Collisions are fatal rather than last-write-wins. Two skills claiming the
+ * same alias is a taxonomy mistake, and resolving it by insertion order would
+ * hand every course tagged that way to whichever skill happened to be declared
+ * later in the file, silently and for good.
+ */
 const ALIAS_INDEX = new Map();
+const claim = (key, id) => {
+  const existing = ALIAS_INDEX.get(key);
+  if (existing && existing !== id) {
+    throw new Error(`Alias "${key}" is claimed by both ${existing} and ${id} in data/skills.ts.`);
+  }
+  ALIAS_INDEX.set(key, id);
+};
 for (const s of SKILLS) {
-  ALIAS_INDEX.set(s.name.toLowerCase(), s.id);
-  ALIAS_INDEX.set(s.id, s.id);
-  for (const a of s.aliases) ALIAS_INDEX.set(a.toLowerCase(), s.id);
+  claim(s.name.toLowerCase(), s.id);
+  claim(s.id, s.id);
+  for (const a of s.aliases) claim(a.toLowerCase(), s.id);
 }
 
 const canonical = (raw) =>
@@ -63,13 +78,36 @@ const cleanText = (raw) =>
     .replace(/\s*\u2013\s*/g, ', ')
     .trim();
 
+/**
+ * Resolve a source skill string to a canonical skill id.
+ *
+ * Matching stays exact against the alias index, deliberately. A fuzzy matcher
+ * here would quietly file courses under skills they do not teach, and a wrong
+ * tag is worse than a missing one because it reaches the roadmap.
+ *
+ * The variants below are not fuzz. Each is a different way of writing the same
+ * name, so trying them costs nothing in precision. The parenthetical forms
+ * matter most: the source writes "Artificial Intelligence (AI)", "Cascading
+ * Style Sheets (CSS)", "Human Resources (HR)", and an exact-only match threw
+ * away all 1,500 strings written that way, across every domain.
+ */
 function normalizeSkill(raw) {
   if (!raw) return null;
   const key = canonical(raw);
-  if (ALIAS_INDEX.has(key)) return ALIAS_INDEX.get(key);
-  // Try dropping a trailing qualifier: "Python Programming" -> "Python".
-  const trimmed = key.replace(/\b(programming|development|fundamentals|basics|skills|techniques)\b/g, '').trim();
-  if (trimmed && ALIAS_INDEX.has(trimmed)) return ALIAS_INDEX.get(trimmed);
+  const squash = (s) => s.replace(/\s+/g, ' ').trim();
+
+  const variants = [key];
+  // "Python Programming" -> "Python"
+  variants.push(squash(key.replace(/\b(programming|development|fundamentals|basics|skills|techniques)\b/g, '')));
+  // "Artificial Intelligence (AI)" -> "artificial intelligence". Also handles a
+  // gloss in the middle, as in "Database (DB) Design" -> "database design".
+  variants.push(squash(key.replace(/\s*\([^)]*\)\s*/g, ' ')));
+  // The gloss alone is often the name people actually use: "(SEO)", "(UX)".
+  for (const m of key.matchAll(/\(([^)]+)\)/g)) variants.push(squash(m[1]));
+
+  for (const v of variants) {
+    if (v && ALIAS_INDEX.has(v)) return ALIAS_INDEX.get(v);
+  }
   return null;
 }
 
@@ -147,6 +185,7 @@ function main() {
   const stats = { read: raw.length, noSkill: 0, thinReviews: 0, lowRating: 0, duplicate: 0, kept: 0 };
   const seenUrl = new Set();
   const seenTitle = new Set();
+  const seenId = new Set();
   const out = [];
 
   for (const r of raw) {
@@ -173,9 +212,23 @@ function main() {
 
     const provider = cleanText(r['Offered By']) || 'Coursera';
     const titleKey = `${provider.toLowerCase()}::${canonical(title)}`;
-    if (seenUrl.has(url) || seenTitle.has(titleKey)) { stats.duplicate++; continue; }
+    /*
+     * The id is derived here rather than at the push below, because it is what
+     * the catalog is keyed on and so it is what has to be unique. Deduplicating
+     * on url and title alone is not enough: the id truncates the url, and the
+     * source carries localised editions of the same course whose urls differ
+     * only past the cut. Two rows then reached the catalog under one id.
+     */
+    const id = 'cr-' + url
+      .replace(/^https?:\/\/(www\.)?coursera\.org\//, '')
+      .replace(/[^a-z0-9]+/gi, '-')
+      .replace(/^-|-$/g, '')
+      .toLowerCase()
+      .slice(0, 60);
+    if (seenUrl.has(url) || seenTitle.has(titleKey) || seenId.has(id)) { stats.duplicate++; continue; }
     seenUrl.add(url);
     seenTitle.add(titleKey);
+    seenId.add(id);
 
     const modules = (r['Modules'] ?? '').split(',').map((x) => x.trim()).filter(Boolean);
     const outcomes = (r['What you will learn'] ?? '').trim();
@@ -216,7 +269,7 @@ function main() {
     const tier = qualityScore >= 0.72 ? 'core' : qualityScore >= 0.58 ? 'strong' : 'supplementary';
 
     out.push({
-      id: 'cr-' + url.replace(/^https?:\/\/(www\.)?coursera\.org\//, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase().slice(0, 60),
+      id,
       title,
       provider,
       instructor,

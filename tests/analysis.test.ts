@@ -116,3 +116,35 @@ describe('analysis handles sparse profiles', () => {
     }
   });
 });
+
+/*
+ * Readiness counts four things, and two of them used to ignore the goal
+ * entirely: projects and experience were raw totals. While every career here
+ * was technical that was roughly defensible, since any engineering work was at
+ * least weak evidence for any engineering role. Across four domains it was not:
+ * this profile, a data scientist, scored 26% ready for Music Producer on the
+ * strength of two web projects and ten months at a software job.
+ */
+describe('readiness corroboration is weighed against the goal', () => {
+  const readinessFor = (careerGoalId: string) =>
+    analyze({ profile: demoProfile(), plan: { ...DEMO_PLAN, careerGoalId } }).readiness;
+
+  it('credits past work toward a role it is relevant to', () => {
+    const own = readinessFor('data-scientist');
+    expect(own.components.projects).toBeGreaterThan(0.3);
+    expect(own.components.experience).toBeGreaterThan(0.2);
+  });
+
+  it('credits none of it toward a role it has nothing to do with', () => {
+    for (const id of ['music-producer', 'photographer', 'historian']) {
+      const far = readinessFor(id);
+      expect(far.components.projects, id).toBe(0);
+      expect(far.components.experience, id).toBe(0);
+    }
+  });
+
+  it('ranks the learner far higher on their own field than on a distant one', () => {
+    expect(readinessFor('data-scientist').overall)
+      .toBeGreaterThan(readinessFor('music-producer').overall + 0.5);
+  });
+});

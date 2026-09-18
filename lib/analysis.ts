@@ -10,6 +10,7 @@
  */
 
 import { getCareer, type CareerGoal } from '@/data/careers';
+import { normalizeSkill } from '@/data/skills';
 import { getResource, type LearningResource } from '@/data/resources';
 import { PROJECTS, type ProjectTemplate } from '@/data/projects';
 import { buildStudentSkills, toVector } from '@/lib/skills/vector';
@@ -94,8 +95,9 @@ export function analyze(input: AnalyzeInput): Analysis {
   // computed once here and reused for every resource scored below.
   context.gapVector = gapEmbedding(gaps);
   const readiness = computeCareerReadiness(vector, career, {
-    projects: input.profile.projects.length + (input.progress?.projectsCompleted.length ?? 0),
-    experienceMonths: estimateExperienceMonths(input.profile),
+    projects: relevantProjectCount(input.profile, career) +
+      (input.progress?.projectsCompleted.length ?? 0),
+    experienceMonths: estimateExperienceMonths(input.profile, career),
   });
 
   const picks = topK(context, 6);
@@ -181,20 +183,67 @@ function academicSkillsFrom(profile: StudentProfile): string[] {
   return [...new Set(implied)];
 }
 
-/** Total months of recorded experience, from the dates on each position. */
-function estimateExperienceMonths(profile: StudentProfile): number {
+/**
+ * How much of a piece of past work the target role actually asks for, 0 to 1.
+ *
+ * Projects and experience used to be counted as raw totals. That was defensible
+ * while every career here was technical, because any engineering work was at
+ * least weak evidence for any engineering role. Across four domains it stopped
+ * being defensible: a profile with two web apps and ten months at a software job
+ * scored 26% ready for Music Producer, having never touched an instrument. The
+ * count had no idea what the role was.
+ *
+ * A signal that ignores the goal is not corroboration, it is a number that only
+ * looks like one. So each entry now counts in proportion to how much of what it
+ * used is in the role's own skill set.
+ */
+function relevanceTo(career: CareerGoal, raw: readonly string[]): number {
+  const wanted = new Set<string>([
+    ...career.skills.map((s) => s.skillId),
+    ...career.foundations,
+  ]);
+  const ids = raw.map((name) => normalizeSkill(name)).filter((id): id is string => Boolean(id));
+  // Work whose skills we cannot resolve at all is not evidence either way.
+  if (ids.length === 0) return 0;
+  return ids.filter((id) => wanted.has(id)).length / ids.length;
+}
+
+/** Every skill name an entry mentions, whether declared or inferred. */
+function namesOf(entry: { technologies: string[]; skills: { rawName: string }[] }): string[] {
+  return [...entry.technologies, ...entry.skills.map((s) => s.rawName)];
+}
+
+/**
+ * Projects, each weighted by its relevance to the role.
+ *
+ * Fractional by design. A project that is half about the role is half the
+ * evidence of one that is entirely about it, and rounding that to zero or one
+ * would throw away the distinction the weighting exists to make.
+ */
+function relevantProjectCount(profile: StudentProfile, career: CareerGoal): number {
+  return profile.projects.reduce((sum, p) => sum + relevanceTo(career, namesOf(p)), 0);
+}
+
+/**
+ * Months of recorded experience, each position weighted by its relevance to the
+ * role. Dates decide the duration; the skill overlap decides how much of that
+ * duration counts toward this particular goal.
+ */
+function estimateExperienceMonths(profile: StudentProfile, career: CareerGoal): number {
   let months = 0;
   for (const exp of profile.experience) {
     const start = parseMonth(exp.startDate);
     const end = exp.endDate && !/present/i.test(exp.endDate) ? parseMonth(exp.endDate) : new Date();
+    let span: number;
     if (start && end) {
       const diff =
         (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
       // A position with no readable dates still counts for something.
-      months += diff > 0 ? diff : 3;
+      span = diff > 0 ? diff : 3;
     } else {
-      months += 3;
+      span = 3;
     }
+    months += span * relevanceTo(career, namesOf(exp));
   }
   return months;
 }

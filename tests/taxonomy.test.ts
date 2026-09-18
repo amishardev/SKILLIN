@@ -163,4 +163,48 @@ describe('catalog can serve the careers it offers', () => {
       expect(coverage(id), id).toBeGreaterThanOrEqual(0.7);
     }
   });
+
+  /*
+   * The coverage floor above is a percentage, so a role can clear it while one
+   * of its required skills is taught by nothing at all. That skill is then a
+   * gap the product displays and can never close: the learner finishes every
+   * course offered and readiness still stops short, with no explanation. Nine
+   * roles were in that state, all of them management or creative, because the
+   * source tags those skills with words the alias table did not carry.
+   *
+   * Courses and projects both count. Some skills are only ever demonstrated,
+   * not lectured at, and a portfolio is built rather than attended.
+   */
+  it('can teach every skill some role requires', () => {
+    const teachable = new Set([
+      ...catalog.flatMap((r) => r.skills),
+      ...PROJECTS.flatMap((p) => p.skills),
+    ]);
+    const unteachable = CAREER_GOALS.flatMap((c) =>
+      c.skills.filter((s) => !teachable.has(s.skillId)).map((s) => `${c.id} -> ${s.skillId}`));
+    expect(unteachable).toEqual([]);
+  });
+});
+
+/*
+ * The ingest resolves a course's skill strings through one alias table. Two
+ * skills claiming the same alias means whichever is declared later takes every
+ * course tagged that way, silently and permanently. That had already happened
+ * twice: "people management" sat on both Human Resources and Leadership, and
+ * "video production" on both Videography and Video Editing.
+ */
+describe('skill aliases', () => {
+  it('are claimed by exactly one skill each', () => {
+    const owner = new Map<string, string>();
+    const collisions: string[] = [];
+    for (const skill of SKILLS) {
+      const keys = [skill.name.toLowerCase(), skill.id, ...skill.aliases.map((a) => a.toLowerCase())];
+      for (const key of keys) {
+        const existing = owner.get(key);
+        if (existing && existing !== skill.id) collisions.push(`"${key}": ${existing} and ${skill.id}`);
+        else owner.set(key, skill.id);
+      }
+    }
+    expect(collisions).toEqual([]);
+  });
 });
