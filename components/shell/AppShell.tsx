@@ -45,7 +45,8 @@ const NAV_FOOT = [
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { ready, user, profile, plan } = useSession();
+  const { authReady, dataReady, loadError, retryLoad, user, profile, plan } = useSession();
+  const ready = authReady && dataReady;
 
   // Learn is a deliberately different mode: a dark, immersive catalog rather
   // than the cream editorial dashboard. The shell follows it so the surrounding
@@ -64,15 +65,25 @@ export function AppShell({ children }: { children: ReactNode }) {
    * browser, rather than an account, the thing that held your work.
    */
   useEffect(() => {
-    if (!ready) return;
+    // Signed out is knowable from auth alone, and waiting on Firestore to say
+    // so is what left this screen loading forever when Firestore would not
+    // answer.
+    if (!authReady) return;
     if (!user) {
       router.replace('/auth/login');
       return;
     }
+    /*
+     * Past this point the decision needs the documents, and it needs them to
+     * have actually been read. An unreachable database is not an empty one, and
+     * treating it as one sends a learner who has a profile through onboarding
+     * to build a second.
+     */
+    if (!dataReady || loadError) return;
     if (!profile || !plan) {
       router.replace('/onboarding');
     }
-  }, [ready, user, profile, plan, router]);
+  }, [authReady, dataReady, loadError, user, profile, plan, router]);
 
   /*
    * The motion logo is for waits that are actually waits. Firebase resolving a
@@ -81,6 +92,38 @@ export function AppShell({ children }: { children: ReactNode }) {
    * threshold. Below it the page simply stays blank for a moment.
    */
   const slow = useSlowLoad(!ready || !user || !profile || !plan);
+
+  /*
+   * Signed in, but the profile could not be read. Not a sign-out: the account
+   * is fine and the session is valid, so throwing the learner back to the login
+   * screen would be both wrong and infuriating. Offer the two things that can
+   * actually help.
+   */
+  if (authReady && user && loadError) {
+    return (
+      <div className="shell">
+        <main className="shell-main" style={{ display: 'grid', placeItems: 'center' }}>
+          <div className="stack-md" style={{ maxWidth: 380, textAlign: 'center' }}>
+            <h1 className="title-sm">We signed you in, but couldn&apos;t load your profile.</h1>
+            <p className="body">
+              Your work is safe. This is usually a connection problem.
+            </p>
+            <div className="wrap" style={{ justifyContent: 'center' }}>
+              <button
+                type="button"
+                className="btn btn-dark"
+                style={{ minHeight: 44 }}
+                onClick={() => void retryLoad()}
+              >
+                Retry
+              </button>
+              <SignOutButton onDone={() => router.push('/')} />
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   if (!ready || !user || !profile || !plan) {
     if (slow) {

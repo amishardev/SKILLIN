@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSession } from '@/lib/client/session';
+import { isInAppBrowser } from '@/lib/client/diagnostics';
 import {
   signInWithEmail,
   registerWithEmail,
@@ -22,7 +23,7 @@ import { LogoLockup } from '@/components/brand/Logo';
  */
 export default function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
   const router = useRouter();
-  const { profile } = useSession();
+  const { ready, user, profile, plan } = useSession();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -30,12 +31,35 @@ export default function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [busy, setBusy] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+  /*
+   * Read after mount, never during render: the user agent is a browser fact and
+   * reading it while rendering produces markup the server cannot match.
+   */
+  const [embedded, setEmbedded] = useState(false);
+  useEffect(() => setEmbedded(isInAppBrowser()), []);
 
   const isSignup = mode === 'signup';
 
-  function go() {
-    router.push(profile ? '/app' : '/onboarding');
-  }
+  /*
+   * One authoritative navigation, and it waits.
+   *
+   * The form used to route the moment the credential call resolved, choosing
+   * between /app and /onboarding from the `profile` it happened to be holding.
+   * At that instant the auth listener has not fired, so profile was always null
+   * and every returning learner was sent to onboarding. Worse, onboarding's own
+   * guard then saw a still-null user and replaced the route with /auth/login,
+   * so a correct password landed you back on the login screen. Whether it
+   * happened at all came down to which resolved first on that device, which is
+   * why it looked like only some phones were broken.
+   *
+   * Nothing is decided here until the session has actually resolved the account
+   * that was just signed in, and the documents that say where it belongs.
+   */
+  useEffect(() => {
+    if (!signedIn || !ready || !user) return;
+    router.replace(profile && plan ? '/app' : '/onboarding');
+  }, [signedIn, ready, user, profile, plan, router]);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -46,16 +70,21 @@ export default function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
       if (isSignup) {
         if (fullName.trim().length < 2) {
           setError('Tell us your name so we can address you properly.');
+          // Nothing was attempted, so the form has to come back to life. There
+          // is no finally clause now: the success path stays busy until it
+          // navigates, so every early exit has to release it itself.
+          setBusy(false);
           return;
         }
         await registerWithEmail(email.trim(), password, fullName.trim());
       } else {
         await signInWithEmail(email.trim(), password);
       }
-      go();
+      // Stays busy: the effect above navigates once the session resolves, and
+      // re-enabling the form in between invites a second submission.
+      setSignedIn(true);
     } catch (err) {
       setError(authErrorMessage(err));
-    } finally {
       setBusy(false);
     }
   }
@@ -64,11 +93,14 @@ export default function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
     setError('');
     setBusy(true);
     try {
-      await signInWithGoogle();
-      go();
+      const result = await signInWithGoogle();
+      // Null means a redirect was started because this browser refused the
+      // popup. The page is on its way to Google; there is nothing to navigate.
+      if (result) setSignedIn(true);
+      // No finally clearing busy: on success the effect navigates, and on a
+      // redirect the page is leaving. Either way the form should stay locked.
     } catch (err) {
       setError(authErrorMessage(err));
-    } finally {
       setBusy(false);
     }
   }
@@ -112,6 +144,20 @@ export default function AuthForm({ mode }: { mode: 'signin' | 'signup' }) {
             <GoogleMark />
             Continue with Google
           </button>
+
+          {/*
+            Tapping a link inside Instagram, LinkedIn or WhatsApp opens their own
+            browser, where Google sign-in frequently cannot complete and the
+            button appears to do nothing. Saying so up front is the difference
+            between a workaround and a dead end. Email sign-in below still works
+            here, so this warns rather than blocks.
+          */}
+          {embedded ? (
+            <p className="meta" style={{ textAlign: 'center' }}>
+              You&apos;re in an in-app browser. For the most reliable sign-in, open SkillIn in
+              Safari or Chrome.
+            </p>
+          ) : null}
 
           <div className="row" style={{ gap: 12 }}>
             <hr className="divider" style={{ flex: 1 }} />

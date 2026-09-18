@@ -4,6 +4,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   GoogleAuthProvider,
   signOut,
   onAuthStateChanged,
@@ -40,23 +42,87 @@ export async function registerWithEmail(
   return result.user;
 }
 
-export async function signInWithGoogle(): Promise<User> {
-  const result = await signInWithPopup(getAuthClient(), googleProvider);
-  const user = result.user;
-
-  // Create the account record on first sign-in only, so a returning user's
-  // saved onboarding state is never reset.
+/**
+ * Give a Google account its SkillIn record, if it does not have one.
+ *
+ * Only on first sign-in, so a returning learner's saved onboarding state is
+ * never reset back to the beginning.
+ */
+async function ensureUserDoc(user: User): Promise<void> {
   const existing = await getUserDoc(user.uid);
-  if (!existing) {
-    await createUserDoc(user.uid, {
-      fullName: user.displayName ?? user.email?.split('@')[0] ?? 'Learner',
-      email: user.email ?? '',
-      avatarUrl: user.photoURL ?? undefined,
-      onboardingComplete: false,
-      timezone: browserTimezone(),
-    });
+  if (existing) return;
+  await createUserDoc(user.uid, {
+    fullName: user.displayName ?? user.email?.split('@')[0] ?? 'Learner',
+    email: user.email ?? '',
+    avatarUrl: user.photoURL ?? undefined,
+    onboardingComplete: false,
+    timezone: browserTimezone(),
+  });
+}
+
+/**
+ * Failures that mean "this browser will not do popups", as opposed to "this
+ * person changed their mind".
+ *
+ * A cancelled popup is a decision and must not silently restart sign-in as a
+ * full page redirect. The rest are the environment refusing, and the only way
+ * through is to hand the whole page to Google and come back.
+ */
+const POPUP_UNAVAILABLE = new Set([
+  'auth/popup-blocked',
+  'auth/operation-not-supported-in-this-environment',
+  'auth/web-storage-unsupported',
+  'auth/internal-error',
+]);
+
+/**
+ * Sign in with Google, by popup where that works and by redirect where it does
+ * not.
+ *
+ * Popups are blocked outright in most in-app browsers, the ones that open when
+ * a link is tapped inside Instagram, LinkedIn or WhatsApp, and are unreliable
+ * in iOS Safari with cross-site tracking prevention on. Offering only a popup
+ * leaves those users with a button that appears to do nothing.
+ *
+ * Resolves to null when a redirect has been started: the page is navigating
+ * away, and the result is picked up by completeGoogleRedirect on return.
+ */
+export async function signInWithGoogle(): Promise<User | null> {
+  const auth = getAuthClient();
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    await ensureUserDoc(result.user);
+    return result.user;
+  } catch (err) {
+    const code = typeof err === 'object' && err && 'code' in err ? String(err.code) : '';
+    if (!POPUP_UNAVAILABLE.has(code)) throw err;
+
+    await signInWithRedirect(auth, googleProvider);
+    return null;
   }
-  return user;
+}
+
+/**
+ * Finish a redirect sign-in, if this page load is the return leg of one.
+ *
+ * Called once when the session provider mounts, never per render. Returns null
+ * on an ordinary page load, which is the common case and not an error.
+ */
+export async function completeGoogleRedirect(): Promise<User | null> {
+  try {
+    const result = await getRedirectResult(getAuthClient());
+    if (!result) return null;
+    await ensureUserDoc(result.user);
+    return result.user;
+  } catch {
+    /*
+     * A failed redirect must not take the app down with it. The auth listener
+     * is the authority on whether anyone is signed in, and it will report that
+     * nobody is, which lands the visitor on the login screen with the form
+     * ready rather than on a blank page.
+     */
+    return null;
+  }
 }
 
 export async function signOutUser(): Promise<void> {
@@ -103,7 +169,11 @@ export function authErrorMessage(err: unknown): string {
     case 'auth/cancelled-popup-request':
       return 'Sign-in was cancelled.';
     case 'auth/popup-blocked':
-      return 'Your browser blocked the sign-in popup. Allow popups and try again.';
+      return 'Your browser blocked the sign-in window, so we are trying again in this tab.';
+    case 'auth/web-storage-unsupported':
+      return 'This browser is blocking the storage sign-in needs. Try again in Safari or Chrome, or allow site data for this site.';
+    case 'auth/operation-not-supported-in-this-environment':
+      return 'Sign-in is not supported in this in-app browser. Open SkillIn in Safari or Chrome.';
     case 'auth/too-many-requests':
       return 'Too many attempts. Wait a moment and try again.';
     case 'auth/network-request-failed':

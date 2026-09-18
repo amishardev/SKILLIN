@@ -53,7 +53,9 @@ const PATH_STEPS = [
 export default function OnboardingPage() {
   const router = useRouter();
   const reduceMotion = useReducedMotion();
-  const { ready, user, profile, plan, setProfile, setPlan } = useSession();
+  const { authReady, dataReady, loadError, user, profile, plan, setProfile, setPlan } =
+    useSession();
+  const ready = authReady && dataReady;
 
   /*
    * Onboarding writes a profile, and a profile belongs to an account. Without
@@ -61,8 +63,11 @@ export default function OnboardingPage() {
    * rather than letting you do the work twice.
    */
   useEffect(() => {
-    if (ready && !user) router.replace('/auth/login');
-  }, [ready, user, router]);
+    // authReady, not ready. Whether anyone is signed in does not depend on
+    // Firestore, and waiting on it here is what bounced a learner mid sign-in
+    // back to the login screen.
+    if (authReady && !user) router.replace('/auth/login');
+  }, [authReady, user, router]);
 
   const [stage, setStage] = useState<Stage>('upload');
   const [draft, setDraft] = useState<StudentProfile | null>(null);
@@ -83,7 +88,10 @@ export default function OnboardingPage() {
    * device with no extra writes.
    */
   useEffect(() => {
-    if (!ready || !user || resumed) return;
+    // Resuming reads the stored documents, so unlike the guard above this does
+    // need them, and it must not latch on a read that failed. Doing so would
+    // start an existing learner at the upload step with an empty draft.
+    if (!ready || loadError || !user || resumed) return;
     setResumed(true);
 
     if (profile && plan) {
@@ -94,7 +102,7 @@ export default function OnboardingPage() {
       setDraft(profile);
       setStage('career');
     }
-  }, [ready, user, profile, plan, resumed, router]);
+  }, [ready, loadError, user, profile, plan, resumed, router]);
 
   const handleExtracted = useCallback((profile: StudentProfile, extractionMeta: ExtractionMeta) => {
     setDraft(profile);

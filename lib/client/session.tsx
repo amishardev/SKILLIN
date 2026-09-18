@@ -6,11 +6,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
 import type { User } from 'firebase/auth';
-import { onAuthChange } from '@/lib/firebase/auth';
+import { completeGoogleRedirect, onAuthChange } from '@/lib/firebase/auth';
 import {
   browserTimezone,
   loadPlan,
@@ -43,6 +44,23 @@ const PLAN_KEY = 'skillin:plan';
 const SAVED_KEY = 'skillin:saved';
 
 export interface SessionState {
+  /**
+   * Firebase has said whether anyone is signed in. This is the only thing a
+   * route guard may wait on before deciding, and it is deliberately not tied
+   * to any Firestore read.
+   */
+  authReady: boolean;
+  /** The signed-in user's stored documents have been read, or have failed. */
+  dataReady: boolean;
+  /**
+   * The documents could not be read for a reason that is not Security Rules.
+   * Distinct from having none: a learner whose profile failed to load has not
+   * lost it, and must not be sent back through onboarding to make another.
+   */
+  loadError: boolean;
+  /** Read the stored documents again, for the retry button. */
+  retryLoad: () => Promise<void>;
+  /** authReady and dataReady together, for callers that need both. */
   ready: boolean;
   user: User | null;
   profile: StudentProfile | null;
@@ -91,7 +109,9 @@ export interface RecordActivityResult {
 const SessionContext = createContext<SessionState | null>(null);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [dataReady, setDataReady] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfileState] = useState<StudentProfile | null>(null);
   const [plan, setPlanState] = useState<CareerPlan | null>(null);
@@ -120,48 +140,125 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // ── Hydrate ──
-  useEffect(() => {
-    const unsubscribe = onAuthChange(async (firebaseUser) => {
-      setUser(firebaseUser);
-
-      if (firebaseUser) {
-        try {
-          const [remoteProfile, remotePlan, saved] = await Promise.all([
-            loadProfile(firebaseUser.uid),
-            loadPlan(firebaseUser.uid),
-            loadSavedResourceIds(firebaseUser.uid),
-          ]);
-          setProfileState(remoteProfile);
-          setPlanState(remotePlan);
-          setSavedIds(saved);
-        } catch (err) {
-          if (err instanceof StorageUnavailableError) {
-            setStorageBlocked(true);
-            // Fall back to whatever this browser already holds so the learner
-            // is not staring at an empty app.
-            setProfileState(readLocal<StudentProfile>(PROFILE_KEY));
-            setPlanState(readLocal<CareerPlan>(PLAN_KEY));
-            setSavedIds(readLocal<string[]>(SAVED_KEY) ?? []);
-          } else {
-            console.error('[session] failed to load remote state', err);
-          }
-        }
-      } else {
-        // Signed out means no personal state at all. Firestore is the source of
-        // truth; localStorage is a cache for a signed-in session, never a second
-        // account that lives in one browser.
-        setProfileState(null);
-        setPlanState(null);
-        setSavedIds([]);
-        setProgress(null);
-        setStreak(null);
-        setStorageBlocked(false);
-      }
-      setReady(true);
-    });
-    return unsubscribe;
+  /** Everything that belongs to one account and must not outlive it. */
+  const clearAccountState = useCallback(() => {
+    setProfileState(null);
+    setPlanState(null);
+    setSavedIds([]);
+    setProgress(null);
+    setStreak(null);
+    setStorageBlocked(false);
+    setLoadError(false);
   }, []);
+
+  /**
+   * Read the signed-in learner's documents.
+   *
+   * Separated from the auth listener so that a slow or stalled Firestore delays
+   * only the data, never the answer to "is anyone signed in". Those used to be
+   * the same await, which meant a browser where Firestore hangs, and IndexedDB
+   * being unavailable is enough to do it, never finished resolving auth and the
+   * app sat on its loading screen for good.
+   */
+  const loadAccount = useCallback(async (uid: string) => {
+    setLoadError(false);
+    try {
+      const [remoteProfile, remotePlan, saved] = await Promise.all([
+        loadProfile(uid),
+        loadPlan(uid),
+        loadSavedResourceIds(uid),
+      ]);
+      setProfileState(remoteProfile);
+      setPlanState(remotePlan);
+      setSavedIds(saved);
+    } catch (err) {
+      if (err instanceof StorageUnavailableError) {
+        setStorageBlocked(true);
+        // Fall back to whatever this browser already holds so the learner
+        // is not staring at an empty app.
+        setProfileState(readLocal<StudentProfile>(PROFILE_KEY));
+        setPlanState(readLocal<CareerPlan>(PLAN_KEY));
+        setSavedIds(readLocal<string[]>(SAVED_KEY) ?? []);
+      } else {
+        /*
+         * Not "this learner has no profile". Recording it as a failure is what
+         * stops the route guard reading an unreachable database as a brand new
+         * account and marching an existing learner through onboarding again.
+         */
+        setLoadError(true);
+        console.error('[session] failed to load remote state', err);
+      }
+    } finally {
+      setDataReady(true);
+    }
+  }, []);
+
+  const retryLoad = useCallback(async () => {
+    const uid = user?.uid;
+    if (!uid) return;
+    setDataReady(false);
+    await loadAccount(uid);
+  }, [user, loadAccount]);
+
+  /*
+   * Returning from a redirect sign-in. Once, on mount, never per render: every
+   * call consumes the pending result, and calling it repeatedly is how a
+   * redirect login ends up silently dropped.
+   */
+  useEffect(() => {
+    void completeGoogleRedirect();
+  }, []);
+
+  // ── Hydrate ──
+  const previousUid = useRef<string | null>(null);
+
+  useEffect(() => {
+    /*
+     * Registering the listener can throw outright, when the NEXT_PUBLIC_FIREBASE
+     * variables are missing from a deployment. That used to take the whole tree
+     * down on first paint, so the site looked dead rather than misconfigured.
+     * Resolving as signed out instead puts the visitor on the login screen,
+     * where an attempt produces the message naming the missing key.
+     */
+    let unsubscribe: (() => void) | undefined;
+    try {
+      unsubscribe = onAuthChange((firebaseUser) => {
+        /*
+         * Synchronous, and first. The guards act on this, so nothing that can
+         * block may come before it.
+         */
+        setUser(firebaseUser);
+        setAuthReady(true);
+
+        const uid = firebaseUser?.uid ?? null;
+        const switched = previousUid.current !== uid;
+        previousUid.current = uid;
+
+        if (!firebaseUser) {
+          // Signed out means no personal state at all. Firestore is the source of
+          // truth; localStorage is a cache for a signed-in session, never a second
+          // account that lives in one browser.
+          clearAccountState();
+          setDataReady(true);
+          return;
+        }
+
+        // A different account must never see the last one's work, not even for
+        // the frame between the listener firing and the new read landing.
+        if (switched) {
+          clearAccountState();
+          setDataReady(false);
+        }
+        void loadAccount(firebaseUser.uid);
+      });
+    } catch (err) {
+      console.error('[session] auth unavailable', err);
+      clearAccountState();
+      setAuthReady(true);
+      setDataReady(true);
+    }
+    return () => unsubscribe?.();
+  }, [clearAccountState, loadAccount]);
 
   // ── Derived analysis ──
   const analysis = useMemo<Analysis | null>(() => {
@@ -320,7 +417,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value: SessionState = {
-    ready,
+    authReady,
+    dataReady,
+    loadError,
+    retryLoad,
+    ready: authReady && dataReady,
     user,
     profile,
     plan,
