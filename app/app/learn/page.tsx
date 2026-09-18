@@ -76,7 +76,11 @@ export default function LearnPage() {
   const results = useMemo(() => {
     const q = deferredQuery.trim();
     const hasFilter =
-      filters.freeOnly || (filters.level && filters.level !== 'all') || (filters.type && filters.type !== 'all');
+      filters.freeOnly ||
+      filters.projectOnly ||
+      (filters.group && filters.group !== 'all') ||
+      (filters.level && filters.level !== 'all') ||
+      (filters.type && filters.type !== 'all');
     if (!q && !hasFilter) return null;
     // Cap the rendered result set; the catalog is ~2,400 items and nobody
     // scrolls past a few dozen.
@@ -156,6 +160,14 @@ export default function LearnPage() {
           <div className="detail-card">
             <div className="wrap" style={{ gap: 14, alignItems: 'center' }}>
               <Select
+                label="Field"
+                value={String(filters.group ?? 'all')}
+                options={['all', 'technology', 'business', 'creative', 'humanities']}
+                onChange={(v) =>
+                  setFilters((f) => ({ ...f, group: v as CatalogFilters['group'] }))
+                }
+              />
+              <Select
                 label="Level"
                 value={filters.level ?? 'all'}
                 options={['all', 'beginner', 'intermediate', 'advanced']}
@@ -189,6 +201,15 @@ export default function LearnPage() {
                   style={{ accentColor: 'var(--accent)' }}
                 />
                 Free only
+              </label>
+              <label className="row-tight" style={{ fontSize: '0.8125rem', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={Boolean(filters.projectOnly)}
+                  onChange={(e) => setFilters((f) => ({ ...f, projectOnly: e.target.checked }))}
+                  style={{ accentColor: 'var(--accent)' }}
+                />
+                Project based
               </label>
               <button
                 type="button"

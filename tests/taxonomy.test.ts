@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { CAREER_GOALS, CAREER_CATEGORIES, CAREER_GROUPS } from '@/data/careers';
 import { SKILL_MAP, SKILLS } from '@/data/skills';
 import { fullCatalog } from '@/lib/catalog';
+import { PROJECTS } from '@/data/projects';
 
 /**
  * Structural checks on the taxonomy.
@@ -60,6 +61,34 @@ describe('career taxonomy', () => {
       expect(career, id).toBeDefined();
       expect(career!.credential, id).toBeTruthy();
     }
+  });
+});
+
+describe('project templates', () => {
+  it('reference only skills and careers that exist', () => {
+    const careers = new Set(CAREER_GOALS.map((c) => c.id));
+    const broken: string[] = [];
+    for (const p of PROJECTS) {
+      for (const s of p.skills) if (!SKILL_MAP.has(s)) broken.push(`${p.id} skill -> ${s}`);
+      for (const s of p.prerequisites) if (!SKILL_MAP.has(s)) broken.push(`${p.id} prereq -> ${s}`);
+      for (const c of p.careerTags) if (!careers.has(c)) broken.push(`${p.id} career -> ${c}`);
+    }
+    expect(broken).toEqual([]);
+  });
+
+  it('has unique ids', () => {
+    expect(new Set(PROJECTS.map((p) => p.id)).size).toBe(PROJECTS.length);
+  });
+
+  /*
+   * A role with no buildable project cannot produce a portfolio, which is the
+   * whole output of the creative and management roadmaps.
+   */
+  it('gives every career at least one project', () => {
+    const orphans = CAREER_GOALS
+      .filter((c) => !PROJECTS.some((p) => p.careerTags.includes(c.id)))
+      .map((c) => c.id);
+    expect(orphans).toEqual([]);
   });
 });
 

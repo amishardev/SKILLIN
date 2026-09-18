@@ -2,7 +2,7 @@ import { RESOURCES, type LearningResource, type ResourceLevel, type ResourceType
 import { datasetResources } from './dataset';
 import { extendedResources } from './extended';
 import { skillName } from '@/data/skills';
-import { getCareer } from '@/data/careers';
+import { getCareer, CAREER_CATEGORIES, type CareerGroupId } from '@/data/careers';
 
 /**
  * The merged learning catalog.
@@ -82,6 +82,29 @@ export interface CatalogFilters {
   skillId?: string | 'all';
   /** Upper bound in hours; `all` means no limit. */
   maxHours?: number | 'all';
+  /** Top level field, derived from the careers a resource serves. */
+  group?: CareerGroupId | 'all';
+  /** Only resources with a practical component. */
+  projectOnly?: boolean;
+}
+
+/**
+ * Which top level fields a resource serves.
+ *
+ * Derived from its career tags rather than stored, for the same reason the tags
+ * themselves are derived: the relationship is already expressed by the skills
+ * on both sides, and deriving it keeps the two from drifting.
+ */
+const GROUP_OF_CATEGORY = new Map(CAREER_CATEGORIES.map((c) => [c.id, c.group]));
+
+function groupsOf(r: LearningResource): Set<CareerGroupId> {
+  const out = new Set<CareerGroupId>();
+  for (const tag of r.careerTags) {
+    const career = getCareer(tag);
+    const group = career && GROUP_OF_CATEGORY.get(career.category);
+    if (group) out.add(group);
+  }
+  return out;
 }
 
 /**
@@ -145,6 +168,8 @@ function matchesFilters(r: LearningResource, f: CatalogFilters): boolean {
   if (f.careerId && f.careerId !== 'all' && !r.careerTags.includes(f.careerId)) return false;
   if (f.skillId && f.skillId !== 'all' && !r.skills.includes(f.skillId)) return false;
   if (f.maxHours && f.maxHours !== 'all' && r.estimatedHours > f.maxHours) return false;
+  if (f.projectOnly && !r.projectBased) return false;
+  if (f.group && f.group !== 'all' && !groupsOf(r).has(f.group)) return false;
   return true;
 }
 

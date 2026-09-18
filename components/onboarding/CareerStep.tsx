@@ -3,7 +3,11 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
-import { CAREER_CATEGORIES, CAREER_GOALS, type CareerGoal } from '@/data/careers';
+import CategoryFilter from '@/components/career/CategoryFilter';
+import {
+  CAREER_CATEGORIES, CAREER_GOALS,
+  type CareerGoal, type CareerCategoryId, type CareerGroupId,
+} from '@/data/careers';
 import { skillName, skillShortName } from '@/data/skills';
 import { Chip } from '@/components/ui/primitives';
 import OnboardingContinue from './OnboardingContinue';
@@ -22,18 +26,23 @@ export default function CareerStep({
   onContinue: () => void;
 }) {
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState<string>('all');
+  const [group, setGroup] = useState<CareerGroupId | 'all'>('all');
+  const [category, setCategory] = useState<CareerCategoryId | 'all'>('all');
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const inGroup = new Set(
+      CAREER_CATEGORIES.filter((x) => group === 'all' || x.group === group).map((x) => x.id),
+    );
     return CAREER_GOALS.filter((career) => {
+      if (!inGroup.has(career.category)) return false;
       if (category !== 'all' && career.category !== category) return false;
       if (!q) return true;
       if (career.title.toLowerCase().includes(q)) return true;
       if (career.description.toLowerCase().includes(q)) return true;
       return career.skills.some((s) => skillName(s.skillId).toLowerCase().includes(q));
     });
-  }, [query, category]);
+  }, [query, category, group]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, CareerGoal[]>();
@@ -74,29 +83,12 @@ export default function CareerStep({
       </div>
 
       {/* ── Category filter ── */}
-      <div className="wrap chip-row" role="tablist" aria-label="Career fields">
-        <button
-          type="button"
-          role="tab"
-          className="pill"
-          aria-selected={category === 'all'}
-          onClick={() => setCategory('all')}
-        >
-          All fields
-        </button>
-        {CAREER_CATEGORIES.map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            role="tab"
-            className="pill"
-            aria-selected={category === cat.id}
-            onClick={() => setCategory(cat.id)}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
+      <CategoryFilter
+        group={group}
+        category={category}
+        onGroup={setGroup}
+        onCategory={setCategory}
+      />
 
       {/* ── Results ── */}
       {results.length === 0 ? (

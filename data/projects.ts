@@ -27,6 +27,289 @@ export interface ProjectTemplate {
 }
 
 export const PROJECTS: ProjectTemplate[] = [
+  {
+    id: 'proj-consulting-case',
+    title: 'Consulting Case Study',
+    description:
+      'Take a real company facing a real decision, structure the problem, do the analysis, and write the recommendation as a partner would expect to read it.',
+    difficulty: 'advanced', estimatedHours: 30,
+    skills: ['business-strategy', 'critical-thinking', 'market-research', 'financial-accounting', 'communication'],
+    tools: ['Excel', 'PowerPoint'],
+    prerequisites: ['business-fundamentals'],
+    careerTags: ['management-consultant', 'strategy-analyst', 'business-analyst'],
+    portfolioValue: 'very-high',
+    outcome: 'A structured deck that reaches one recommendation and shows the analysis behind it.',
+  },
+  {
+    id: 'proj-sales-playbook',
+    title: 'Sales Playbook and Pipeline Model',
+    description:
+      'Define an ideal customer, write the qualification criteria and objection handling, and model the pipeline maths that would hit a target.',
+    difficulty: 'intermediate', estimatedHours: 20,
+    skills: ['sales', 'negotiation', 'communication', 'spreadsheets', 'market-research'],
+    tools: ['Spreadsheets', 'CRM'],
+    prerequisites: ['sales'],
+    careerTags: ['sales-manager', 'growth-manager', 'founder'],
+    portfolioValue: 'high',
+    outcome: 'A playbook plus a pipeline model showing what conversion rates the target actually requires.',
+  },
+  {
+    id: 'proj-illustration-series',
+    title: 'Illustration Series',
+    description:
+      'Produce a set of eight illustrations on one theme, consistent enough in voice that they read as one body of work.',
+    difficulty: 'intermediate', estimatedHours: 32,
+    skills: ['illustration', 'colour-theory', 'design-fundamentals', 'adobe-creative', 'portfolio-development'],
+    tools: ['Procreate', 'Illustrator'],
+    prerequisites: ['illustration'],
+    careerTags: ['illustrator', 'graphic-designer', 'art-director'],
+    portfolioValue: 'very-high',
+    outcome: 'A cohesive series where the style is recognisably yours across every piece.',
+  },
+  {
+    id: 'proj-motion-reel',
+    title: 'Motion Design Reel',
+    description:
+      'Animate three short pieces, a logo resolve, an explainer segment and a UI interaction, then cut them into one reel.',
+    difficulty: 'intermediate', estimatedHours: 30,
+    skills: ['motion-design', 'design-fundamentals', 'adobe-creative', 'portfolio-development'],
+    tools: ['After Effects', 'Figma'],
+    prerequisites: ['motion-design'],
+    careerTags: ['motion-designer', 'graphic-designer', 'content-creator'],
+    portfolioValue: 'very-high',
+    outcome: 'A reel under ninety seconds where every second earns its place.',
+  },
+  {
+    id: 'proj-translation-portfolio',
+    title: 'Translation and Localisation Sample',
+    description:
+      'Localise one real piece of content properly: translate it, adapt what does not carry across, and annotate the choices you made and why.',
+    difficulty: 'intermediate', estimatedHours: 22,
+    skills: ['linguistics', 'editing-proofreading', 'cultural-studies', 'communication'],
+    tools: ['CAT tools', 'Any editor'],
+    prerequisites: ['linguistics'],
+    careerTags: ['language-specialist', 'editor', 'writer'],
+    portfolioValue: 'high',
+    outcome: 'A parallel text with annotations that show the judgement, not just the translation.',
+  },
+  {
+    id: 'proj-comms-plan',
+    title: 'Communications Plan',
+    description:
+      'Write the full plan for one announcement, including the messaging, the channels, the sequence and what you would say if it went wrong.',
+    difficulty: 'intermediate', estimatedHours: 20,
+    skills: ['communication', 'content-strategy', 'copywriting', 'stakeholder-management', 'risk-management'],
+    tools: ['Notion', 'Any editor'],
+    prerequisites: ['communication'],
+    careerTags: ['communication-specialist', 'marketing-manager', 'brand-manager'],
+    portfolioValue: 'high',
+    outcome: 'A plan with the messaging, the sequence and a holding statement for the bad case.',
+  },
+
+  // ─── Business and management ───
+  // Portfolio work in these fields is a document, not a repository. The
+  // artefact a reviewer reads is the deliverable, so each outcome below names
+  // the thing they will actually open.
+  {
+    id: 'proj-marketing-campaign',
+    title: 'End to End Marketing Campaign',
+    description:
+      'Pick a real product, research its audience, position it, then plan and cost a multi channel campaign with the metrics you would judge it by.',
+    difficulty: 'intermediate', estimatedHours: 30,
+    skills: ['marketing-fundamentals', 'market-research', 'brand-strategy', 'digital-marketing', 'marketing-analytics'],
+    tools: ['Spreadsheets', 'Google Analytics', 'Canva'],
+    prerequisites: ['marketing-fundamentals'],
+    careerTags: ['marketing-manager', 'brand-manager', 'growth-manager', 'digital-marketing-specialist'],
+    portfolioValue: 'very-high',
+    outcome: 'A campaign document with positioning, channel plan, budget and the success metrics stated before launch.',
+  },
+  {
+    id: 'proj-product-case-study',
+    title: 'Product Case Study and PRD',
+    description:
+      'Choose a product with an obvious flaw, research why it exists, and write the requirements document for fixing it, including what you would not build.',
+    difficulty: 'intermediate', estimatedHours: 25,
+    skills: ['product-management', 'ux-research', 'market-research', 'stakeholder-management', 'product-analytics'],
+    tools: ['Figma', 'Notion', 'Spreadsheets'],
+    prerequisites: ['product-management'],
+    careerTags: ['product-manager', 'business-analyst', 'strategy-analyst'],
+    portfolioValue: 'very-high',
+    outcome: 'A PRD a team could build from, with the trade-offs and the rejected options written down.',
+  },
+  {
+    id: 'proj-business-analysis',
+    title: 'Dataset to Recommendation',
+    description:
+      'Take a real business dataset, work out what question it can actually answer, and produce a recommendation with the uncertainty stated.',
+    difficulty: 'intermediate', estimatedHours: 25,
+    skills: ['business-analysis', 'data-analysis', 'spreadsheets', 'data-visualization', 'communication'],
+    tools: ['Excel', 'SQL', 'Power BI'],
+    prerequisites: ['spreadsheets'],
+    careerTags: ['business-analyst', 'operations-manager', 'strategy-analyst'],
+    portfolioValue: 'very-high',
+    outcome: 'A short deck that reaches a recommendation and shows the analysis behind it.',
+  },
+  {
+    id: 'proj-financial-model',
+    title: 'Three Statement Financial Model',
+    description:
+      'Build a linked income statement, balance sheet and cash flow for a real listed company, then run the scenarios that would break it.',
+    difficulty: 'advanced', estimatedHours: 35,
+    skills: ['financial-modelling', 'financial-accounting', 'corporate-finance', 'spreadsheets'],
+    tools: ['Excel'],
+    prerequisites: ['financial-accounting'],
+    careerTags: ['financial-analyst', 'investment-analyst', 'strategy-analyst'],
+    portfolioValue: 'very-high',
+    outcome: 'A working model with assumptions on their own sheet and a sensitivity table.',
+  },
+  {
+    id: 'proj-hiring-process',
+    title: 'Hiring Process Design',
+    description:
+      'Design the full loop for one role: sourcing, the scorecard, the interview plan and how you would check it for bias.',
+    difficulty: 'intermediate', estimatedHours: 18,
+    skills: ['talent-acquisition', 'human-resources', 'organisational-behaviour', 'communication'],
+    tools: ['Notion', 'Spreadsheets'],
+    prerequisites: ['human-resources'],
+    careerTags: ['hr-manager', 'talent-acquisition-specialist'],
+    portfolioValue: 'high',
+    outcome: 'A documented process with the scorecard and the rubric a panel would actually use.',
+  },
+  {
+    id: 'proj-ops-improvement',
+    title: 'Process Improvement Study',
+    description:
+      'Map a real operational process end to end, find where it leaks time or money, and propose a change with the expected effect quantified.',
+    difficulty: 'intermediate', estimatedHours: 22,
+    skills: ['operations-management', 'business-analysis', 'data-analysis', 'spreadsheets'],
+    tools: ['Excel', 'Lucidchart'],
+    prerequisites: ['operations-management'],
+    careerTags: ['operations-manager', 'supply-chain-manager', 'project-manager'],
+    portfolioValue: 'high',
+    outcome: 'A before and after process map with the measured bottleneck and a costed proposal.',
+  },
+  {
+    id: 'proj-startup-plan',
+    title: 'Venture Plan and Pitch',
+    description:
+      'Take one problem you have seen personally, size the market honestly, and build the pitch including why it might not work.',
+    difficulty: 'advanced', estimatedHours: 40,
+    skills: ['entrepreneurship', 'business-strategy', 'market-research', 'financial-modelling', 'communication'],
+    tools: ['Spreadsheets', 'Figma'],
+    prerequisites: ['entrepreneurship'],
+    careerTags: ['founder', 'strategy-analyst'],
+    portfolioValue: 'very-high',
+    outcome: 'A deck and a model, with the riskiest assumption named and a test for it.',
+  },
+
+  // ─── Creative ───
+  {
+    id: 'proj-brand-system',
+    title: 'Complete Brand Identity System',
+    description:
+      'Build an identity for a real or invented organisation: mark, type, colour, and the rules that keep it consistent when other people use it.',
+    difficulty: 'intermediate', estimatedHours: 35,
+    skills: ['brand-identity', 'typography', 'colour-theory', 'design-fundamentals', 'adobe-creative'],
+    tools: ['Illustrator', 'Figma'],
+    prerequisites: ['design-fundamentals'],
+    careerTags: ['graphic-designer', 'art-director', 'brand-manager'],
+    portfolioValue: 'very-high',
+    outcome: 'A brand guideline document and applied mockups, not a logo on a white square.',
+  },
+  {
+    id: 'proj-design-case-study',
+    title: 'Product Design Case Study',
+    description:
+      'Take one flow in a real product, research how people actually use it, redesign it, and document the reasoning from problem to decision.',
+    difficulty: 'intermediate', estimatedHours: 35,
+    skills: ['ui-design', 'ux-research', 'design-systems', 'design-thinking', 'portfolio-development'],
+    tools: ['Figma', 'Maze'],
+    prerequisites: ['ui-design'],
+    careerTags: ['ux-ui-designer', 'product-designer', 'ux-researcher'],
+    portfolioValue: 'very-high',
+    outcome: 'A case study that shows the research, the rejected directions and the final screens.',
+  },
+  {
+    id: 'proj-photo-portfolio',
+    title: 'Curated Photography Portfolio',
+    description:
+      'Shoot a coherent body of work on one subject, edit it to a consistent treatment, and cut it to the twelve frames that carry it.',
+    difficulty: 'intermediate', estimatedHours: 30,
+    skills: ['photography', 'photo-editing', 'colour-theory', 'portfolio-development'],
+    tools: ['Lightroom', 'Camera'],
+    prerequisites: ['photography'],
+    careerTags: ['photographer', 'content-creator'],
+    portfolioValue: 'very-high',
+    outcome: 'A sequenced portfolio where the edit is as considered as the shooting.',
+  },
+  {
+    id: 'proj-short-film',
+    title: 'Short Film, Script to Cut',
+    description:
+      'Write, shoot and edit a piece under five minutes. The constraint is the point: finish it.',
+    difficulty: 'advanced', estimatedHours: 45,
+    skills: ['videography', 'video-editing', 'screenwriting', 'sound-design', 'portfolio-development'],
+    tools: ['DaVinci Resolve', 'Camera'],
+    prerequisites: ['videography'],
+    careerTags: ['filmmaker', 'film-editor', 'content-creator'],
+    portfolioValue: 'very-high',
+    outcome: 'A finished film with a graded picture and a mixed soundtrack.',
+  },
+  {
+    id: 'proj-music-release',
+    title: 'Produce and Release a Track',
+    description:
+      'Take one idea from arrangement through mix to master, and actually publish it. Shipping is the skill being proved.',
+    difficulty: 'intermediate', estimatedHours: 30,
+    skills: ['music-production', 'mixing-mastering', 'music-theory', 'sound-design'],
+    tools: ['Ableton Live', 'Logic Pro'],
+    prerequisites: ['music-production'],
+    careerTags: ['music-producer', 'sound-designer'],
+    portfolioValue: 'very-high',
+    outcome: 'A mastered track on a public platform, with the project file to show the work.',
+  },
+  {
+    id: 'proj-writing-portfolio',
+    title: 'Writing Portfolio',
+    description:
+      'Produce six finished pieces across at least two forms, edited to publication standard rather than left as drafts.',
+    difficulty: 'intermediate', estimatedHours: 30,
+    skills: ['creative-writing', 'copywriting', 'editing-proofreading', 'portfolio-development'],
+    tools: ['Any editor'],
+    prerequisites: ['creative-writing'],
+    careerTags: ['writer', 'copywriter', 'editor', 'journalist'],
+    portfolioValue: 'very-high',
+    outcome: 'A portfolio where the range is visible and every piece is actually finished.',
+  },
+
+  // ─── Research ───
+  {
+    id: 'proj-research-study',
+    title: 'Small Scale Research Study',
+    description:
+      'Frame one answerable question, choose a method that fits it, collect data ethically, and write up what the results do and do not support.',
+    difficulty: 'advanced', estimatedHours: 45,
+    skills: ['research-methods', 'quantitative-research', 'qualitative-research', 'academic-writing', 'statistics'],
+    tools: ['Qualtrics', 'SPSS', 'R'],
+    prerequisites: ['research-methods'],
+    careerTags: ['psychology-researcher', 'social-researcher', 'ux-researcher', 'policy-analyst'],
+    portfolioValue: 'very-high',
+    outcome: 'A written report with the method, the limitations and the data available for checking.',
+  },
+  {
+    id: 'proj-literature-review',
+    title: 'Systematic Literature Review',
+    description:
+      'Take one contested question, find what has been published, and synthesise where the field agrees and where it does not.',
+    difficulty: 'intermediate', estimatedHours: 30,
+    skills: ['research-methods', 'academic-writing', 'critical-thinking'],
+    tools: ['Zotero', 'Google Scholar'],
+    prerequisites: ['research-methods'],
+    careerTags: ['historian', 'philosopher', 'cultural-researcher', 'social-researcher', 'art-historian'],
+    portfolioValue: 'high',
+    outcome: 'A review with a stated search strategy, so somebody else could repeat it.',
+  },
+
   // ─── Data / ML foundations ───
   {
     id: 'proj-eda-report',

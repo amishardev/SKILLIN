@@ -14,7 +14,7 @@
 import { getResource, type LearningResource } from '@/data/resources';
 import { fullCatalog } from '@/lib/catalog';
 import { PROJECTS, type ProjectTemplate } from '@/data/projects';
-import { getCareer, type CareerGoal } from '@/data/careers';
+import { getCareer, type CareerGoal, type LearningModel } from '@/data/careers';
 import { skillName } from '@/data/skills';
 import { checkReadiness } from '@/lib/recommendation/prerequisites';
 import { rankResources, computeSkillGaps, type ScoringContext } from '@/lib/recommendation/engine';
@@ -112,7 +112,8 @@ export function buildRoadmap(input: PlanInput): Roadmap {
     projects,
     input.weeklyHours,
     input.timelineMonths,
-    input.vector);
+    input.vector,
+    career.learningModel ?? 'technical');
 
   // ── Report honestly on what the budget could not cover ──
   const covered = new Set(chosen.flatMap((c) => c.skills));
@@ -245,12 +246,35 @@ function pickProjects(
  * A project is inserted after the resource that taught its headline skill, so
  * practice immediately follows theory rather than being bolted on at the end.
  */
+/**
+ * When practical work is placed, by field.
+ *
+ * Fields are not learned the same way, and forcing one shape on all of them
+ * produces a plan that is wrong for most. A designer learns by making from the
+ * first week; a researcher cannot start the study until the method is settled;
+ * a manager needs the functional grounding before a case study means anything.
+ *
+ * Prerequisites still gate everything: this decides how soon a project may be
+ * placed once it is already unlocked, never whether the learner is ready.
+ */
+const PROJECT_START: Record<LearningModel, number> = {
+  // Build alongside the theory, from early on.
+  technical: 0.15,
+  // Practice is the method here, so it starts almost immediately.
+  creative: 0.05,
+  // Functional knowledge first, then case work.
+  management: 0.45,
+  // Foundations and method before the study begins.
+  research: 0.6,
+};
+
 function schedule(
   resources: LearningResource[],
   projects: ProjectTemplate[],
   weeklyHours: number,
   timelineMonths: number,
-  startingVector: SkillVector): Milestone[] {
+  startingVector: SkillVector,
+  model: LearningModel = 'technical'): Milestone[] {
   const items: Array<{ kind: 'resource' | 'project'; resource?: LearningResource; project?: ProjectTemplate }> =
     [];
 
@@ -279,13 +303,17 @@ function schedule(
     }
   };
 
-  for (const resource of resources) {
+  const startAfter = Math.floor(resources.length * PROJECT_START[model]);
+
+  resources.forEach((resource, index) => {
     items.push({ kind: 'resource', resource });
     for (const skillId of resource.skills) {
       acquired.set(skillId, Math.max(acquired.get(skillId) ?? 0, TAUGHT_LEVEL));
     }
-    placeReadyProjects(resource.skills);
-  }
+    // Unlocked is not the same as due. A research project is buildable long
+    // before it is the right moment to start it.
+    if (index >= startAfter) placeReadyProjects(resource.skills);
+  });
 
   // Anything still pending goes at the end, by which point the whole plan has
   // run and its prerequisites are satisfied.

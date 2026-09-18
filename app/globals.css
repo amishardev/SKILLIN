@@ -506,6 +506,19 @@ button, input, textarea, select { font: inherit; color: inherit; }
 
 .btn-sm { padding: 6px 12px; font-size: 0.8125rem; white-space: nowrap; }
 
+/* Second level of the field filter: same pill, quieter, so the hierarchy is
+   visible without a second control style. */
+.pill-sub {
+  font-size: 0.8125rem;
+  padding: 5px 13px;
+  color: var(--ink-2);
+}
+.pill-sub[aria-selected='true'] {
+  background: var(--dark);
+  color: var(--on-dark);
+  font-weight: 600;
+}
+
 /* ─── Skill map density ─── */
 
 /* Counts belong beside the heading, not in three cards of their own. */

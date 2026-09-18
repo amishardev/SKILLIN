@@ -6,7 +6,11 @@ import { useRouter } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Search, ArrowRight, ArrowLeft, Check } from 'lucide-react';
 import { useSession } from '@/lib/client/session';
-import { CAREER_CATEGORIES, CAREER_GOALS, type CareerGoal } from '@/data/careers';
+import {
+  CAREER_CATEGORIES, CAREER_GOALS,
+  type CareerGoal, type CareerCategoryId, type CareerGroupId,
+} from '@/data/careers';
+import CategoryFilter from '@/components/career/CategoryFilter';
 import { skillName, skillShortName } from '@/data/skills';
 import { fullCatalog } from '@/lib/catalog';
 import { LogoLockup } from '@/components/brand/Logo';
@@ -24,7 +28,8 @@ export default function GoalsPage() {
   const { plan, profile, setPlan } = useSession();
 
   const [query, setQuery] = useState('');
-  const [category, setCategory] = useState<string>('all');
+  const [group, setGroup] = useState<CareerGroupId | 'all'>('all');
+  const [category, setCategory] = useState<CareerCategoryId | 'all'>('all');
 
   // How many catalog resources actually serve each role, a real number, not a
   // marketing one, so an under-served goal is visible rather than hidden.
@@ -38,7 +43,11 @@ export default function GoalsPage() {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const inGroup = new Set(
+      CAREER_CATEGORIES.filter((x) => group === 'all' || x.group === group).map((x) => x.id),
+    );
     return CAREER_GOALS.filter((c) => {
+      if (!inGroup.has(c.category)) return false;
       if (category !== 'all' && c.category !== category) return false;
       if (!q) return true;
       return (
@@ -47,7 +56,7 @@ export default function GoalsPage() {
         c.skills.some((s) => skillName(s.skillId).toLowerCase().includes(q))
       );
     });
-  }, [query, category]);
+  }, [query, category, group]);
 
   const grouped = useMemo(() => {
     const map = new Map<string, CareerGoal[]>();
@@ -125,28 +134,13 @@ export default function GoalsPage() {
           </motion.div>
 
           {/* ── Categories ── */}
-          <motion.div className="wrap chip-row" style={{ marginBottom: 34 }} role="tablist" aria-label="Career fields" {...rise(0.08)}>
-            <button
-              type="button"
-              role="tab"
-              className="pill"
-              aria-selected={category === 'all'}
-              onClick={() => setCategory('all')}
-            >
-              All fields
-            </button>
-            {CAREER_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                role="tab"
-                className="pill"
-                aria-selected={category === cat.id}
-                onClick={() => setCategory(cat.id)}
-              >
-                {cat.label}
-              </button>
-            ))}
+          <motion.div style={{ marginBottom: 34 }} {...rise(0.08)}>
+            <CategoryFilter
+              group={group}
+              category={category}
+              onGroup={setGroup}
+              onCategory={setCategory}
+            />
           </motion.div>
 
           {/* ── Results ── */}
