@@ -5,6 +5,7 @@ import {
   PdfExtractionError,
 } from '@/lib/profile/extract';
 import { MAX_PDF_BYTES } from '@/lib/pdf/extract';
+import { MAX_UPLOAD_MB } from '@/lib/upload/pdf-file';
 import { sanitizePdfText } from '@/lib/pdf/extract';
 
 /** PDF parsing needs Node APIs and can exceed the default edge time budget. */
@@ -13,7 +14,7 @@ export const maxDuration = 60;
 
 /** User-facing copy for each failure mode. Never a blank screen. */
 const FAILURE_COPY: Record<string, string> = {
-  too_large: 'That PDF is over 10 MB. Try re-exporting it from LinkedIn.',
+  too_large: `File is too large. Maximum size is ${MAX_UPLOAD_MB} MB.`,
   not_a_pdf: "That file isn't a PDF. Use LinkedIn → Profile → Resources → Save to PDF.",
   encrypted: 'That PDF is password protected, so we cannot read it.',
   image_only:

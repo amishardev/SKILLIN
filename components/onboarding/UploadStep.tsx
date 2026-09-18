@@ -1,10 +1,11 @@
 'use client';
 
-import { useRef, useState, type DragEvent } from 'react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 import SkillInMotionLogo from '@/components/brand/MotionLogo';
 import { FileText, Upload, Clipboard } from 'lucide-react';
 import { ErrorNote } from '@/components/ui/primitives';
+import PdfUpload from '@/components/upload/PdfUpload';
+import { MAX_UPLOAD_MB } from '@/lib/upload/pdf-file';
 import type { StudentProfile } from '@/types';
 
 export interface ExtractionMeta {
@@ -21,8 +22,6 @@ interface Props {
   onBusyChange: (busy: boolean) => void;
 }
 
-const MAX_MB = 10;
-
 /**
  * The first real product action: upload the LinkedIn profile PDF.
  *
@@ -31,11 +30,9 @@ const MAX_MB = 10;
  */
 export default function UploadStep({ onExtracted, onBusyChange }: Props) {
   const [error, setError] = useState('');
-  const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
   const [mode, setMode] = useState<'upload' | 'paste'>('upload');
   const [pasted, setPasted] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
 
   function setWorking(value: boolean) {
     setBusy(value);
@@ -52,9 +49,24 @@ export default function UploadStep({ onExtracted, onBusyChange }: Props) {
           : { body }),
       });
 
-      const data = await res.json();
+      /*
+       * A rejection by the host rather than the route arrives as HTML or as
+       * nothing at all, and parsing it as JSON throws. That used to surface as
+       * "we couldn't reach the server", which is wrong and unactionable: the
+       * server was reached and it refused the body.
+       */
+      const data = await res.json().catch(() => null);
+
       if (!res.ok) {
-        setError(data.error ?? "We couldn't read that. Please try again.");
+        setError(
+          data?.error ??
+            (res.status === 413
+              ? 'Upload failed, that file is too large to send. Try a smaller PDF.'
+              : 'Upload failed. Please try again.'));
+        return;
+      }
+      if (!data?.profile) {
+        setError('Upload failed. Please try again.');
         return;
       }
       onExtracted(data.profile as StudentProfile, data.meta as ExtractionMeta);
@@ -65,22 +77,12 @@ export default function UploadStep({ onExtracted, onBusyChange }: Props) {
     }
   }
 
-  async function handleFile(file: File | undefined, kind: 'linkedin' | 'resume') {
-    if (!file) return;
-    if (file.size > MAX_MB * 1024 * 1024) {
-      setError(`That file is ${(file.size / 1024 / 1024).toFixed(1)} MB. The limit is ${MAX_MB} MB.`);
-      return;
-    }
+  /** The file has already been validated by the picker that produced it. */
+  async function handleFile(file: File, kind: 'linkedin' | 'resume') {
     const form = new FormData();
     form.append('file', file);
     form.append('kind', kind);
     await send(form);
-  }
-
-  function onDrop(event: DragEvent<HTMLLabelElement>) {
-    event.preventDefault();
-    setDragging(false);
-    void handleFile(event.dataTransfer.files?.[0], 'linkedin');
   }
 
   return (
@@ -95,72 +97,37 @@ export default function UploadStep({ onExtracted, onBusyChange }: Props) {
 
       {mode === 'upload' ? (
         <>
-          <motion.label
-            htmlFor="linkedin-pdf"
-            onDragOver={(e) => {
-              e.preventDefault();
-              setDragging(true);
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={onDrop}
-            animate={{ scale: dragging ? 1.01 : 1 }}
-            transition={{ duration: 0.15 }}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 14,
-              padding: '52px 28px',
-              borderRadius: 'var(--r-lg)',
-              border: `2px dashed ${dragging ? 'var(--ink)' : 'var(--line-strong)'}`,
-              background: dragging ? 'var(--card)' : 'var(--card-alt)',
-              cursor: busy ? 'progress' : 'pointer',
-              textAlign: 'center',
-            }}
-          >
-            {busy ? (
+          <PdfUpload
+            kind="linkedin"
+            busy={busy}
+            onFileSelected={(file) => void handleFile(file, 'linkedin')}
+            onError={setError}
+            buttonLabel={
+              <>
+                <Upload size={16} aria-hidden="true" />
+                Choose PDF
+              </>
+            }
+            busyNode={
               /* Reading a PDF and running it through extraction takes seconds,
                  which is exactly the kind of wait the motion logo is for. */
               <SkillInMotionLogo variant="loader" message="Reading your profile" />
-            ) : (
-              <>
-                <span
-                  aria-hidden="true"
-                  style={{
-                    display: 'grid', placeItems: 'center', width: 54, height: 54,
-                    borderRadius: 16, background: '#0A66C218', color: '#0A66C2',
-                  }}
-                >
-                  <FileText size={24} strokeWidth={1.8} />
-                </span>
-                <span className="stack-sm">
-                  <span className="title-sm">Drop your LinkedIn PDF here</span>
-                  <span className="meta">PDF · up to {MAX_MB} MB</span>
-                </span>
-              </>
-            )}
-            <input
-              ref={inputRef}
-              id="linkedin-pdf"
-              type="file"
-              accept="application/pdf.pdf"
-              className="sr-only"
-              disabled={busy}
-              onChange={(e) => void handleFile(e.target.files?.[0], 'linkedin')}
-            />
-          </motion.label>
-
-          <div className="wrap">
-            <button
-              type="button"
-              className="btn btn-dark"
-              disabled={busy}
-              onClick={() => inputRef.current?.click()}
+            }
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                display: 'grid', placeItems: 'center', width: 54, height: 54,
+                borderRadius: 16, background: '#0A66C218', color: '#0A66C2',
+              }}
             >
-              <Upload size={16} aria-hidden="true" />
-              Choose PDF
-            </button>
-          </div>
+              <FileText size={24} strokeWidth={1.8} />
+            </span>
+            <span className="stack-sm">
+              <span className="title-sm">Choose your LinkedIn PDF</span>
+              <span className="meta">PDF · up to {MAX_UPLOAD_MB} MB</span>
+            </span>
+          </PdfUpload>
 
           <details className="card" style={{ padding: '16px 20px' }}>
             <summary style={{ cursor: 'pointer', fontWeight: 600, fontSize: '0.9375rem' }}>
@@ -217,20 +184,14 @@ export default function UploadStep({ onExtracted, onBusyChange }: Props) {
           style={{ borderTop: '1px solid var(--line)', paddingTop: 18, alignItems: 'center' }}
         >
           <span className="meta">No LinkedIn PDF?</span>
-          <button
-            type="button"
-            className="btn btn-quiet"
-            style={{ padding: '6px 12px' }}
-            onClick={() => {
-              const el = document.createElement('input');
-              el.type = 'file';
-              el.accept = 'application/pdf.pdf';
-              el.onchange = () => void handleFile(el.files?.[0], 'resume');
-              el.click();
-            }}
-          >
-            Upload a résumé PDF
-          </button>
+          <PdfUpload
+            kind="resume"
+            variant="button"
+            busy={busy}
+            onFileSelected={(file) => void handleFile(file, 'resume')}
+            onError={setError}
+            buttonLabel="Upload a résumé PDF"
+          />
           <button
             type="button"
             className="btn btn-quiet"
